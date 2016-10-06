@@ -1,0 +1,432 @@
+<form class="form-horizontal well form" onsubmit='return false;' role="form">
+    <fieldset>
+        <div id="legend" class="">
+            <legend class="">
+                <%=cfg.title%>
+            </legend>
+        </div>
+        <% _.each(cfg.items, function(item,i) { %>
+            <!--编辑模式-->
+            <%if(cfg.mode=='edit'||cfg.mode=='create'||(cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit')){%>
+                <%if(item.type=='hidden'){%>
+                    <input id="<%=item.name%>" type="hidden" class="form-control" value="<%=detail[item.name]%>" controltype='<%=item.type%>' />
+                    <%}%>
+                        <%if(item.type=='text'){%>
+                            <div class="control-group">
+                                <!-- Text input-->
+                                <label class="control-label"><%=item.title%></label>
+                                <div class="controls">
+                                    <input id="<%=item.name%>" name="<%=item.name%>" type="text" placeholder="<%=item.placeholder%>" class="input-xlarge form-control" value="<%=detail[item.name]%>" controltype='<%=item.type%>' />
+                                    <p class="help-block">
+                                        <%=item.helpblock%>
+                                    </p>
+                                </div>
+                            </div>
+                            <%}%>
+
+                                <!-- Add By CJP -->
+                                <%if(item.type=='addline'){%>
+                                    <div class="control-group">
+                                        <label class="control-label"><%=item.title%></label>
+                                        <div class="controls">
+                                            <div id="<%=item.name%>" class="form-control input-group" controltype="addline">
+                                                <div class="input-group-btn" style="display:inline;margin-left:0px;">
+                                                    <button id="<%=item.name%>add" name="<%=item.name%>+add" type="button" class="btn" style="display:inline;margin-left:0px;">+
+                      </button>
+                                                    <button id="<%=item.name%>dlt" name="<%=item.name%>+dlt" type="button" class="btn" style="display:inline;margin-left:0px;">-
+                      </button>
+                                                </div>
+                                                <p />
+                                                <input id="Text1" name="<%=item.name+1%>" style="width: 230px;" type="text" />
+                                            </div>
+                                            <p class="help-block">
+                                                <%=item.helpblock%>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        $(function() {
+                                            var a = 1;
+                                            $('#<%=item.name%>add').click(function() {
+                                                if (a < 100) {
+                                                    a++;
+                                                    var p = document.createElement("p");
+                                                    $("#<%=item.name%>").append(p);
+                                                    var box = document.createElement("input");
+                                                    box.id = '<%=item.name%>' + a;
+                                                    box.name = '<%=item.name%>' + a;
+                                                    box.type = 'text';
+                                                    box.style.width = 230 + "px";
+                                                    $("#<%=item.name%>").append(box);
+                                                }
+                                            });
+                                            $('#<%=item.name%>dlt').click(function() {
+                                                if (a == 1 || $('#<%=item.name%>' + a).val() != "") {
+                                                    return;
+                                                } else {
+                                                    $('#<%=item.name%>' + a).remove();
+                                                    a--;
+                                                }
+                                            });
+                                        })
+                                    </script>
+                                    <%}%>
+
+                                        <%if(item.type=='textarea'){%>
+                                            <div class="control-group">
+                                                <!-- Text input-->
+                                                <label class="control-label"><%=item.title%></label>
+                                                <div class="controls">
+                                                    <div class="textarea">
+                                                        <textarea id="<%=item.name%>" name="<%=item.name%>" style='width:270px;' class="form-control" rows="5" controltype='<%=item.type%>'> <%=detail[item.name]%></textarea>
+                                                    </div>
+                                                    <p class="help-block">
+                                                        <%=item.helpblock%>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <%}%>
+
+                                                <%if(item.type=='pwd'){%>
+                                                    <div class="control-group">
+                                                        <!-- Text input-->
+                                                        <label class="control-label"><%=item.title%></label>
+                                                        <div class="controls">
+                                                            <input id="<%=item.name%>" name="<%=item.name%>" type="password" placeholder="<%=item.placeholder%>" class="input-xlarge form-control" value="<%=detail[item.name]%>" controltype='<%=item.type%>' />
+                                                            <p class="help-block">
+                                                                <%=item.helpblock%>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <%}%>
+
+                                                        <%if(item.type=='combox'){%>
+                                                            <div class="control-group">
+                                                                <!-- Text input-->
+                                                                <label class="control-label"><%=item.title%></label>
+                                                                <div class="controls">
+                                                                    <select id="<%=item.name%>" style='width:284px;' class="input-xlarge form-control" controltype='<%=item.type%>'>
+                <% _.each(item.data, function(option,i) { %>
+                <%if(option.id==detail[item.name]){%>
+                <option selected="selected" value="<%=option.id%>"><%=option.value%></option>
+                <%}else{%>
+                <option value="<%=option.id%>"><%=option.value%></option>
+                <%}})%>
+              </select>
+                                                                    <p class="help-block">
+                                                                        <%=item.helpblock%>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <%}%>
+                                                                <%if(item.type=='timer'){%>
+                                                                    <div class="control-group">
+                                                                        <!-- Text input-->
+                                                                        <label class="control-label"><%=item.title%></label>
+                                                                        <div class="controls">
+                                                                            <input id="<%=item.name%>" name="<%=item.name%>" type="text" placeholder="<%=item.placeholder%>" class="form-control" controltype='<%=item.type%>' />
+                                                                            <p class="help-block">
+                                                                                <%=item.helpblock%>
+                                                                            </p>
+                                                                        </div>
+                                                                        <script type="text/javascript">
+                                                                            $('#<%=item.name%>').datetimepicker({
+                                                                                lang: "ch",
+                                                                                format: "Y-m-d H:i",
+                                                                                timepicker: true,
+                                                                                todayButton: false
+                                                                            });
+                                                                        </script>
+                                                                    </div>
+                                                                    <%}%>
+                                                                        <%if(item.type=='upload'){%>
+                                                                            <div class="control-group">
+                                                                                <!-- Text input-->
+                                                                                <label class="control-label"><%=item.title%></label>
+                                                                                <div class="controls">
+                                                                                    <%
+                  var detailValue=detail[item.name];
+                  var displayText='';
+                  var displayValue='';
+                  var displayLink='';
+                  if(detailValue){
+                    displayText=detailValue.text;
+                    displayValue=detailValue.value;
+                    displayLink=detailValue.link;
+                  }
+              %>
+                                                                                        <input id="<%=item.name%>" name="<%=item.name%>" type="text" value="<%=displayValue%>" class="form-control" controltype='<%=item.type%>' style="width: 0;height: 0;border: 0;background: transparent;" />
+                                                                                        <p id="<%=item.name+1%>" style="line-height:29px;display:inline;">
+                                                                                            <%if(displayLink){%>
+                                                                                                <a target="_bank" href='<%=displayLink%>'>
+                                                                                                    <%=displayText%>
+                                                                                                </a>
+                                                                                                <%}else{%>
+                                                                                                    <%=displayText%>
+                                                                                                        <%}%>
+                                                                                        </p>
+                                                                                        &nbsp;&nbsp;&nbsp;
+                                                                                        <img id="<%=item.name+3%>" src="/bi/ref/uploadify/uploadify-cancel.png" style="display:none" />
+                                                                                        <input id="<%=item.name+2%>" name="<%=item.name%>" type="file" />
+                                                                                        <p class="help-block">
+                                                                                            <%=item.helpblock%>
+                                                                                        </p>
+                                                                                </div>
+
+                                                                                <script type="text/javascript">
+                                                                                    var a = '<%=displayText%>' + '';
+                                                                                    if (a) {
+                                                                                        $('#<%=item.name+3%>').show();
+                                                                                    } else {
+                                                                                        $('#<%=item.name+3%>').hide();
+                                                                                    }
+                                                                                    $('#<%=item.name+3%>').click(function() {
+                                                                                        $(this).hide();
+                                                                                        $('#<%=item.name%>').val('')
+                                                                                        $('#<%=item.name+1%>').html('')
+                                                                                    });
+                                                                                    $('#<%=item.name+2%>').uploadify({
+                                                                                        fileTypeExts: '<%=item.filter%>',
+                                                                                        fileTypeDesc: '<%=item.filterDesc%>',
+                                                                                        uploader: '<%=item.url%>',
+                                                                                        fileSizeLimit: '10240KB',
+                                                                                        multi: false,
+                                                                                        buttonText: "请选择...",
+                                                                                        height: 30,
+                                                                                        swf: '/bi/ref/uploadify/uploadify.swf',
+                                                                                        width: 120,
+                                                                                        buttonImage: '/bi/ref/uploadify/browse-btn.png',
+                                                                                        onUploadSuccess: function(f, d, r) {
+                                                                                            var res = eval("(" + d + ")");
+                                                                                            $('#<%=item.name%>').val(res.value)
+                                                                                            if (res.link) {
+                                                                                                $('#<%=item.name+1%>').html('<a target="_bank" href=' + res.link + '>' + res.text + '</a>')
+                                                                                            } else {
+                                                                                                $('#<%=item.name+1%>').html(res.text)
+                                                                                            }
+                                                                                            $('#<%=item.name+3%>').show();
+                                                                                        }
+                                                                                    });
+                                                                                </script>
+                                                                            </div>
+                                                                            <%}%>
+                                                                                <%if(item.type=='suggest'){%>
+                                                                                    <div class="control-group">
+                                                                                        <label class="control-label"><%=item.title%></label>
+                                                                                        <div class="controls">
+                                                                                            <div class="input-group">
+                                                                                                <input id="<%=item.name%>" name="<%=item.name%>" type="text" style="width:230px;margin-right:0px;" class="form-control" controltype='<%=item.type%>' />
+                                                                                                <div class="input-group-btn" style="display:inline;margin-left:0px;">
+                                                                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="display:inline;margin-left:0px;">
+                          <span class="caret"></span>
+                      </button>
+                                                                                                    <ul class="dropdown-menu dropdown-menu-right dropdown-suggest-<%=item.name%>" role="menu">
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <p class="help-block">
+                                                                                                <%=item.helpblock%>
+                                                                                            </p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <script type="text/javascript">
+                                                                                        var data = [];
+                                                                                        <% _.each(item.data, function(option,i) { %>
+                                                                                        data.push({
+                                                                                            id: "<%=option.id%>",
+                                                                                            word: "<%=option.word%>",
+                                                                                            description: "<%=option.description%>"
+                                                                                        });
+                                                                                        <%})%>
+                                                                                        $("#<%=item.name%>").bsSuggest({
+                                                                                            indexId: 0, //data.value 的第几个数据，作为input输入框的内容
+                                                                                            indexKey: 1, //data.value 的第几个数据，作为input输入框的内容
+                                                                                            data: {
+                                                                                                'value': data
+                                                                                            }
+                                                                                        });
+                                                                                        <% _.each(item.data, function(option,i) { %>
+                                                                                        <%if(option.id==detail[item.name]){%>
+                                                                                        <%}})%>
+                                                                                    </script>
+                                                                                    <%}%>
+                                                                                        <%if(item.type=='yesno'){%>
+                                                                                            <div class="control-group">
+                                                                                                <label class="control-label"><%=item.title%></label>
+                                                                                                <div class="controls">
+                                                                                                    <!-- Multiple Checkboxes -->
+                                                                                                    <label class="checkbox">
+                <input id="<%=item.name%>" name="<%=item.name%>" type="checkbox" class="form-control" value="<%=detail[item.name]%>" controltype='<%=item.type%>' 
+                <%if(detail[item.name]==1){%>
+                checked="checked"
+                <%}%>
+                 />
+              </label>
+                                                                                                    <p class="help-block">
+                                                                                                        <%=item.helpblock%>
+                                                                                                    </p>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <%}%>
+                                                                                                <%if(item.type=='select2select'){%>
+                                                                                                    <div class="control-group">
+                                                                                                        <label class="control-label"><%=item.title%></label>
+                                                                                                        <div class="controls">
+                                                                                                            <div id="<%=item.name%>1"></div>
+                                                                                                            <input id="<%=item.name%>" type="hidden" value="<%=detail[item.name]%>" class="form-control"></input>
+                                                                                                            </label>
+                                                                                                            <p class="help-block">
+                                                                                                                <%=item.helpblock%>
+                                                                                                            </p>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <script type="text/javascript">
+                                                                                                        $.ajax({
+
+                                                                                                            type: 'GET',
+
+                                                                                                            url: '<%=item.url%>',
+
+                                                                                                            success: function(data) {
+                                                                                                                $("#<%=item.name%>1").selectToSelect({
+                                                                                                                    size: 10,
+                                                                                                                    opSelect: data.left,
+                                                                                                                    opReSelect: data.right,
+                                                                                                                    onChange: function(options) {
+                                                                                                                        var ids = $("#<%=item.name%>1").selectToSelect("getSelectedIds");
+                                                                                                                        $("#<%=item.name%>").val(ids);
+                                                                                                                    }
+                                                                                                                });
+                                                                                                            }
+                                                                                                        });
+                                                                                                    </script>
+                                                                                                    <%}%>
+                                                                                                        <%}%>
+                                                                                                            <!--详情模式-->
+                                                                                                            <%if(cfg.mode=='detail'||(cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit')){%>
+                                                                                                                <%if(item.type=='hidden'){%>
+                                                                                                                    <input id="<%=item.name%>" name="<%=item.name%>" type="hidden" class="form-control" value="<%=detail[item.name]%>" controltype='<%=item.type%>' />
+                                                                                                                    <%}%>
+                                                                                                                        <%if(item.type=='yesno'){%>
+                                                                                                                            <div class="control-group">
+                                                                                                                                <!-- Text input-->
+                                                                                                                                <label class="control-label"><%=item.title%></label>
+                                                                                                                                <div class="controls">
+                                                                                                                                    <%if(detail[item.name]==1){%>
+                                                                                                                                        <b class="icon-ok" style="margin-top:8px;"></b>
+                                                                                                                                        <%}else{%>
+                                                                                                                                            <b class="icon-remove" style="margin-top:8px;"></b>
+                                                                                                                                            <%}%>
+                                                                                                                                                <p class="help-block"></p>
+                                                                                                                                </div>
+                                                                                                                            </div>
+                                                                                                                            <%}%>
+                                                                                                                                <%if(item.type=='suggest'){%>
+                                                                                                                                    <% _.each(item.data, function(option,i) { %>
+                                                                                                                                        <%if(option.id==detail[item.name]){%>
+                                                                                                                                            <div class="control-group">
+                                                                                                                                                <!-- Text input-->
+                                                                                                                                                <label class="control-label"><%=item.title%></label>
+                                                                                                                                                <div class="controls">
+                                                                                                                                                    <p style="line-height:29px;">
+                                                                                                                                                        <%=option.word%>
+                                                                                                                                                    </p>
+                                                                                                                                                    <p class="help-block"></p>
+                                                                                                                                                </div>
+                                                                                                                                            </div>
+                                                                                                                                            <%}})%>
+                                                                                                                                                <%}%>
+                                                                                                                                                    <%if(item.type=='text'||item.type=='textarea'||item.type=='timer'||item.type=='select2select'){%>
+                                                                                                                                                        <div class="control-group">
+                                                                                                                                                            <!-- Text input-->
+                                                                                                                                                            <label class="control-label"><%=item.title%></label>
+                                                                                                                                                            <div class="controls">
+                                                                                                                                                                <p style="line-height:29px;">
+                                                                                                                                                                    <%=detail[item.name]%>
+                                                                                                                                                                </p>
+                                                                                                                                                                <p class="help-block"></p>
+                                                                                                                                                            </div>
+                                                                                                                                                        </div>
+                                                                                                                                                        <%}%>
+                                                                                                                                                            <%if(item.type=='combox'){%>
+                                                                                                                                                                <% _.each(item.data, function(option,i) { %>
+                                                                                                                                                                    <%if(option.id==detail[item.name]){%>
+                                                                                                                                                                        <div class="control-group">
+                                                                                                                                                                            <!-- Text input-->
+                                                                                                                                                                            <label class="control-label"><%=item.title%></label>
+                                                                                                                                                                            <div class="controls">
+                                                                                                                                                                                <p style="line-height:29px;">
+                                                                                                                                                                                    <%=option.value%>
+                                                                                                                                                                                </p>
+                                                                                                                                                                                <p class="help-block"></p>
+                                                                                                                                                                            </div>
+                                                                                                                                                                        </div>
+                                                                                                                                                                        <%}})%>
+                                                                                                                                                                            <%}%>
+                                                                                                                                                                                <%if(item.type=='upload'){%>
+                                                                                                                                                                                    <div class="control-group">
+                                                                                                                                                                                        <!-- Text input-->
+                                                                                                                                                                                        <label class="control-label"><%=item.title%></label>
+                                                                                                                                                                                        <div class="controls">
+                                                                                                                                                                                            <%
+                  var detailValue=detail[item.name];
+                  var displayText='';
+                  var displayValue='';
+                  var displayLink='';
+                  if(detailValue){
+                    displayText=detailValue.text;
+                    displayValue=detailValue.value;
+                    displayLink=detailValue.link;
+                  }
+              %>
+                                                                                                                                                                                                <input id="<%=item.name%>" type="hidden" value="<%=displayValue%>" class="form-control" controltype='<%=item.type%>' />
+                                                                                                                                                                                                <p id="<%=item.name+1%>" style="line-height:29px;display:inline;">
+                                                                                                                                                                                                    <%if(displayLink){%>
+                                                                                                                                                                                                        <a target="_bank" href='<%=displayLink%>'>
+                                                                                                                                                                                                            <%=displayText%>
+                                                                                                                                                                                                        </a>
+                                                                                                                                                                                                        <%}else{%>
+                                                                                                                                                                                                            <%=displayText%>
+                                                                                                                                                                                                                <%}%>
+                                                                                                                                                                                                </p>
+                                                                                                                                                                                                &nbsp;&nbsp;&nbsp;
+                                                                                                                                                                                                <img id="<%=item.name+3%>" src="/bi/ref/uploadify/uploadify-cancel.png" style="display:none" />
+                                                                                                                                                                                        </div>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <%}%>
+                                                                                                                                                                                        <%}%>
+                                                                                                                                                                                            <% }) %>
+                                                                                                                                                                                                <div class="control-group">
+                                                                                                                                                                                                    <label class="control-label"></label>
+                                                                                                                                                                                                    <%if(cfg.buttons){%>
+                                                                                                                                                                                                        <% _.each(cfg.buttons, function(item,i) { %>
+                                                                                                                                                                                                            <div class="controls">
+                                                                                                                                                                                                                <button class="btn btn-primary btn-buttons" name='<%=item.name%>'><%=item.title%></button>
+                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                            <%})%>
+                                                                                                                                                                                                                <%}else{%>
+                                                                                                                                                                                                                    <!-- Button -->
+                                                                                                                                                                                                                    <div class="controls">
+                                                                                                                                                                                                                        <%if(cfg.mode=='edit'||cfg.mode=='create'){%>
+                                                                                                                                                                                                                            <button class="btn btn-primary btn-commit">保存</button>
+                                                                                                                                                                                                                            <button class="btn btn-info btn-cancel" data-dismiss="modal" aria-hidden="true">取消</button>
+                                                                                                                                                                                                                            <%}%>
+                                                                                                                                                                                                                                <%if(cfg.mode=='detail'){%>
+                                                                                                                                                                                                                                    <button class="btn btn-info btn-cancel" data-dismiss="modal">返回
+          </button>
+                                                                                                                                                                                                                                    <%}%>
+                                                                                                                                                                                                                                        <%if(cfg.mode=='detailEdit'&&cfg.detailEditMode!='edit'){%>
+                                                                                                                                                                                                                                            <button class="btn btn-primary btn-edit">编辑</button>
+                                                                                                                                                                                                                                            <button class="btn btn-info btn-cancel" data-dismiss="modal">返回
+          </button>
+                                                                                                                                                                                                                                            <%}%>
+                                                                                                                                                                                                                                                <%if(cfg.mode=='detailEdit'&&cfg.detailEditMode=='edit'){%>
+                                                                                                                                                                                                                                                    <button class="btn btn-primary btn-decommit">保存</button>
+                                                                                                                                                                                                                                                    <button class="btn btn-info btn-decancel" data-dismiss="modal">取消
+          </button>
+                                                                                                                                                                                                                                                    <%}%>
+                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                    <%}%>
+                                                                                                                                                                                                </div>
+    </fieldset>
+</form>

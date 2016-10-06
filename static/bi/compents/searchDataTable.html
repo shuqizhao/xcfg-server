@@ -1,0 +1,75 @@
+<div class="searchDataTable well">
+    <%if(title){%>
+    <legend><%=title%></legend>
+    <%}%>
+    <div class="searchDataTableTop  row-fluid" style="height:auto">
+        <div class="span10" style="border-right:1px dashed blue">
+            <form class="form-inline" role="form" style="margin-bottom:-25px;">
+                <% _.each(columns, function(column,i) { %>
+                <div class="form-group" style="margin-bottom:25px;display:inline-block;">
+                    <label class="sr-only" for="name"><%=column.title%>：</label>
+                    <%if(column.type=="combox"){%>
+                    <select class="form-control" id="<%=column.name%>">
+                        <% _.each(column.data, function(item,i) { %>
+                        <option value="<%=item.id%>"><%=item.value%></option>
+                        <%})%>
+                    </select>
+                    <%}else if(column.type=="timer"){%>
+                    <input type="text" class="form-control" id="<%=column.name%>" style="width:90px" /> -
+                    <input type="text" class="form-control" id="<%=column.name+1%>" style="width:90px" />
+                    <script type="text/javascript">
+                        $('#<%=column.name%>').datetimepicker({
+                            lang:"ch",
+                            format:"Y-m-d",
+                            timepicker:false,
+                            todayButton:false
+                        });
+                        $('#<%=column.name+1%>').datetimepicker({
+                            lang:"ch",
+                            format:"Y-m-d",
+                            timepicker:false,
+                            todayButton:false
+                        });
+                    </script>
+                    <%}else if(column.type=="suggest"){%>
+                    <div class="input-group" style="display:inline;">
+                        <input id="<%=column.name%>" name="<%=column.name%>" type="text" style="width:168px;margin-right:0px;"class="form-control" controltype='<%=column.type%>' />
+                        <div class="input-group-btn" style="display:inline;margin-left:0px;">
+                            <button type="button" class="btn btn-default dropdown-toggle btn-suggest" data-toggle="dropdown">
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right dropdown-suggest-<%=column.name%>" role="menu">
+                            </ul>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        var data=[];
+                        <% _.each(column.data, function(option,i) { %>
+                            data.push({id:"<%=option.id%>",word:"<%=option.word%>",description:"<%=option.description%>"});
+                        <%})%>
+                            $("#<%=column.name%>").bsSuggest({
+                            indexId: 0, //data.value 的第几个数据，作为input输入框的内容
+                            indexKey: 1, //data.value 的第几个数据，作为input输入框的内容
+                            data: {
+                            'value':data
+                        }
+                        });
+                    </script>
+                    <%}else{%>
+                    <input type="text" class="form-control" id="<%=column.name%>" autocomplete="off"/>
+                    <%}%>
+                </div>
+                <% }) %>
+            </form>
+        </div>
+        <div class="span2">
+            <center>
+                <button class="btn btn-primary btn-large btn-searchDataTable">搜索</button>
+            </center>
+        </div>
+    </div>
+    <%if(columns.length>0){%>
+    <hr/>
+    <%}%>
+    <div class="searchDataTableBody"></div>
+</div>
