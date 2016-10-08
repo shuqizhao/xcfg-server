@@ -115,9 +115,9 @@ define(['backbone', 'text!searchDataTable.html', 'godModel', 'dataTable', 'modal
                     aTargets: ['_all']
                 }],
                 "fnDrawCallback": function(oSettings) {
-                    console.log(oSettings)
-                        //var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
-                        //console.log(iCurrentPage)
+                    //console.log(oSettings)
+                    //var iCurrentPage = Math.ceil(oSettings._iDisplayStart / oSettings._iDisplayLength) + 1;
+                    //console.log(iCurrentPage)
                     window.localStorage['_iDisplayStart' + oSettings.sAjaxSource] = oSettings._iDisplayStart
                     window.localStorage['_iDisplayLength' + oSettings.sAjaxSource] = oSettings._iDisplayLength
                     window.localStorage['sSearch' + oSettings.sAjaxSource] = oSettings.oPreviousSearch.sSearch

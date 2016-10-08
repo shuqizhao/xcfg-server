@@ -199,7 +199,7 @@
             _iDisplayLength = window.localStorage['_iDisplayLength' + oSettings.sAjaxSource]
             sSearch = window.localStorage['sSearch' + oSettings.sAjaxSource]
             if (_iDisplayStart != null && _iDisplayLength != null && sSearch != null) {
-                if (_iDisplayStart == 0 && sSearch == '') {
+                if (_iDisplayStart == 0 && _iDisplayStart == 10 && sSearch == '') {
                     return
                 }
                 if (oTable != null) {
