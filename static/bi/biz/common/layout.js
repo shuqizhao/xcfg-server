@@ -1,4 +1,4 @@
-﻿define(['backbone', 'text!layout.html', 'tree', 'godModel', 'toastmessage', 'validate', 'message', 'jBootstrap', 'jDataTable', 'select2select'].concat(GodData.RegistBiz), function(Backbone, jst, Tree, GodModel) {
+﻿define(['backbone', 'text!layout.html', 'tree', 'godModel', 'modalForm', 'toastmessage', 'validate', 'message', 'jBootstrap', 'jDataTable', 'select2select'].concat(GodData.RegistBiz), function(Backbone, jst, Tree, GodModel, ModalForm) {
     var mainView = Backbone.View.extend({
         template: _.template(jst),
         initialize: function(options) {
@@ -6,7 +6,8 @@
             this.godModel = new GodModel();
         },
         events: {
-            'click #logout': 'logout'
+            'click #logout': 'logout',
+            'click #modpwd': 'modpwd'
         },
         render: function(amodule, action, first) {
             var self = this;
@@ -88,6 +89,16 @@
             $.cookie('adAuthCookie', "false", { expires: -1, path: "/" });
             $.cookie('loginUser', "false", { expires: -1, path: "/" });
             location.reload();
+        },
+        modpwd: function() {
+            self = this
+            url = 'auth/usermod'
+            var modalForm = new ModalForm({
+                el: $('.left'),
+                url: url
+            });
+            modalForm.render();
+            //Backbone.history.navigate(url);
         }
     });
     return mainView;

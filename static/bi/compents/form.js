@@ -64,7 +64,7 @@ define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'date
             }
             if (self.options.modal) {
                 if (self.$el.find(".aModalForm")) {
-                    self.$el.find(".aModalForm").find("form")[0].reset();
+                    //self.$el.find(".aModalForm").find("form")[0].reset();
                     self.$el.find(".aModalForm").find("[data-toggle='tooltip']").tooltip("destroy");
                     self.$el.find(".aModalForm").modal("show");
                 }
@@ -129,6 +129,8 @@ define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'date
             var self = this;
             if (self.options.cfg.onCancel) {
                 self.options.cfg.onCancel();
+            } else if (self.options.modal) {
+                //$('.modal-backdrop').hide();
             } else {
                 //$.fn.navigate();
                 history.go(-1);
@@ -201,12 +203,12 @@ define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'date
                         alert("查看console.log");
                         console.log(response.data);
                     }
-                    //如果是模态窗体,关闭模态
-                    $('.modal-backdrop').hide();
                     if (response.code == "200") {
                         $.fn.message({
                             msg: self.options.cfg.title + '成功了！'
                         });
+                        //如果是模态窗体,关闭模态
+                        $('.aModalForm').modal('hide');
                     } else if (response.message) {
                         $.fn.message({
                             type: 'warning',

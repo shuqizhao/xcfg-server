@@ -49,3 +49,29 @@ func (c *AuthController) GetMenus() {
 	}
 	c.ServeJSON()
 }
+
+func (c *AuthController) CheckPwd() {
+	data := 0
+	uservm := models.UserModViewModel{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &uservm)
+	id := c.GetSession("userId").(int)
+	if user := models.GetUser(id); user.Pwd == uservm.OldPwd {
+		data = 1
+	}
+	jsonResult := models.JsonResult{Code: 200, Data: data}
+	c.Data["json"] = &jsonResult
+	c.ServeJSON()
+}
+
+func (c *AuthController) ModPwd() {
+	data := 0
+	uservm := models.UserModViewModel{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &uservm)
+	id := c.GetSession("userId").(int)
+	if models.UpdatePwd(id, uservm.Pwd) {
+		data = 1
+	}
+	jsonResult := models.JsonResult{Code: 200, Data: data}
+	c.Data["json"] = &jsonResult
+	c.ServeJSON()
+}

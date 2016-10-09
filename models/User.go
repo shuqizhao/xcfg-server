@@ -40,6 +40,11 @@ type UserLoginViewModel struct {
 	Pwd  string `json:"pwd"`
 }
 
+type UserModViewModel struct {
+	OldPwd string
+	Pwd    string
+}
+
 type UserRoleViewModel struct {
 	Id        string
 	Name      string
@@ -133,4 +138,17 @@ func GetUser(id int) User {
 		fmt.Println(user.Id, user.Name)
 	}
 	return user
+}
+
+func UpdatePwd(id int, pwd string) bool {
+	o := orm.NewOrm()
+	user := User{Id: id}
+	err := o.Read(&user)
+	if o.Read(&user) == nil {
+		user.Pwd = pwd
+		if _, err = o.Update(&user, "pwd"); err == nil {
+			return true
+		}
+	}
+	return false
 }

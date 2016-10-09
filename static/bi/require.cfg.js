@@ -55,6 +55,7 @@ GodData = {
         '/static/bi/biz/auth/user.js',
         '/static/bi/biz/auth/useradd.js',
         '/static/bi/biz/auth/userview.js',
+        '/static/bi/biz/auth/usermod.js',
         '/static/bi/biz/auth/role.js',
         '/static/bi/biz/auth/roleadd.js',
         '/static/bi/biz/auth/roleview.js',

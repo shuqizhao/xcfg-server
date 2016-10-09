@@ -12,7 +12,7 @@ define(['backbone', 'text!modalForm.html', 'form', 'popModal'], function(Backbon
                 self.$el.prepend("<div class='modal fade aModalForm' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' style='width:630px;'></div>")
             }
             self.$el.find('.aModalForm').html(self.template(data));
-            var Module = require('/bi/biz/' + this.options.url + '.js')
+            var Module = require('/static/bi/biz/' + this.options.url + '.js')
             var m = new Module({
                 el: self.$el,
                 modal: true
