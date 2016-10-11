@@ -20,6 +20,7 @@
             self.godModel.fetch({
                 success: function(model, text) {
                     result = model.toJSON();
+                    self.menus = result.data
                     self.dataofTree = [];
                     parentMenus = []
                     for (i in result.data) {
@@ -76,9 +77,13 @@
             });
         },
         draw: function(amodule, action, first) {
+            self = this
+            if (self.checkAuth(action)) {
+                return
+            }
             $('.showbox').remove();
             $('.center').html('<div class="showbox"></div>');
-            this.tree.selectNode(action, first);
+            self.tree.selectNode(action, first);
             var Module = require("/static" + amodule);
             var m = new Module({
                 el: $('.showbox')
@@ -99,6 +104,20 @@
             });
             modalForm.render();
             //Backbone.history.navigate(url);
+        },
+        checkAuth: function(action) {
+            if (!action) return
+            nofound = true
+            for (i in self.menus) {
+                if (self.menus[i].ParentId != 0 && action.indexOf(self.menus[i].Url) != -1) {
+                    nofound = false;
+                    break
+                }
+            }
+            if (nofound) {
+                $(window.location).attr('href', '/notfound');
+            }
+            return nofound
         }
     });
     return mainView;
