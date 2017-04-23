@@ -108,16 +108,16 @@
         checkAuth: function(action) {
             if (!action) return
             nofound = true
-            for (i in self.menus) {
-                if (self.menus[i].ParentId != 0 && action.indexOf(self.menus[i].Url) != -1) {
-                    nofound = false;
-                    break
-                }
-            }
-            if (nofound) {
-                $(window.location).attr('href', '/notfound');
-            }
-            return nofound
+                // for (i in self.menus) {
+                //     if (self.menus[i].ParentId != 0 && action.indexOf(self.menus[i].Url) != -1) {
+                //         nofound = false;
+                //         break
+                //     }
+                // }
+                // if (nofound) {
+                //     $(window.location).attr('href', '/notfound');
+                // }
+            return false;
         }
     });
     return mainView;

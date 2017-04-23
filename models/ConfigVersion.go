@@ -3,6 +3,7 @@ package models
 type RemoteConfigSectionCollection struct {
 	Machine     string                 `xml:"machine,attr"`
 	Application string                 `xml:"application,attr"`
+	Environment string                 `xml:"env,attr"`
 	Sections    []*RemoteConfigSection `xml:"section"`
 }
 type RemoteConfigSection struct {

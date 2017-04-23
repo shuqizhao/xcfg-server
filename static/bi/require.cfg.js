@@ -17,6 +17,10 @@
         datetimepicker: 'ref/datetimepicker/jquery.datetimepicker',
         uploadify: 'ref/uploadify/jquery.uploadify.min',
         suggest: 'ref/suggest/bootstrap-suggest.min',
+        codemirror: '/static/bi/ref/codemirror/codemirror',
+        "cryptojs.core": "/static/bi/ref/cryptojslib/components/core",
+        "cryptojs.base64": "/static/bi/ref/cryptojslib/components/enc-base64",
+
         //compents
         select2select: 'compents/select2select',
         cookie: 'compents/cookie',
@@ -42,7 +46,14 @@
         "form": ["jBootstrap"],
         "toastmessage": ["jquery"],
         "message": ["jquery"],
-        "select2select": ["jquery"]
+        "select2select": ["jquery"],
+        'cryptojs.core': {
+            exports: "CryptoJS"
+        },
+        'cryptojs.base64': {
+            deps: ['cryptojs.core'],
+            exports: "CryptoJS" //You can also use "CryptoJS.enc.Base64"
+        }
     }
 });
 require(['backbonecfg'], function(backbonecfg) {});
@@ -60,5 +71,8 @@ GodData = {
         '/static/bi/biz/auth/roleadd.js',
         '/static/bi/biz/auth/roleview.js',
         '/static/bi/biz/auth/resource.js',
+        '/static/bi/biz/xcfg/xcfg.js',
+        '/static/bi/biz/xcfg/xcfgadd.js',
+        '/static/bi/biz/xcfg/xcfgview.js',
     ]
 };

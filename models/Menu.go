@@ -5,10 +5,11 @@ import "github.com/astaxie/beego/orm"
 type Menu struct {
 	Id         int
 	Name       string
-	Url        string
 	ParentId   int
+	Url        string
 	IsDeleted  int
 	IsEnabled  int
+	Type       int
 	CreateTime string
 	CreateBy   int
 	UpdateTime string
@@ -27,8 +28,23 @@ func GetMenusByPage(offset int64, length int64) ([]*Menu, int64) {
 
 func GetMenusByMenuIds(ids []int) []*Menu {
 	o := orm.NewOrm()
+	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1").Filter("id__in", ids).Filter("type", 0)
+	var menus []*Menu
+	qs.All(&menus)
+	return menus
+}
 
-	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1").Filter("id__in", ids)
+func GetResourcesByMenuIds(ids []int) []*Menu {
+	o := orm.NewOrm()
+	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1").Filter("id__in", ids).Filter("type", 1)
+	var menus []*Menu
+	qs.All(&menus)
+	return menus
+}
+
+func GetWhiteListByMenuIds() []*Menu {
+	o := orm.NewOrm()
+	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1").Filter("type", 2)
 	var menus []*Menu
 	qs.All(&menus)
 	return menus
@@ -43,8 +59,16 @@ func GetMenu(id int) Menu {
 
 func GetMenus() []*Menu {
 	o := orm.NewOrm()
-	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1")
+	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1").Filter("type", 0)
 
+	var menus []*Menu
+	qs.All(&menus)
+	return menus
+}
+
+func GetResources() []*Menu {
+	o := orm.NewOrm()
+	qs := o.QueryTable("Menu").Filter("is_deleted", "0").Filter("is_enabled", "1")
 	var menus []*Menu
 	qs.All(&menus)
 	return menus

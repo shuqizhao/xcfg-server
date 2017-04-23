@@ -1,4 +1,4 @@
-define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'datetimepicker', 'uploadify', 'suggest'], function(Backbone, jst, GodModel) {
+define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'datetimepicker', 'uploadify', 'suggest', 'cryptojs.core', 'cryptojs.base64'], function(Backbone, jst, GodModel) {
     var mainView = Backbone.View.extend({
         template: _.template(jst),
         initialize: function(options) {
@@ -181,6 +181,8 @@ define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'date
                         arraytemp.push(input.val());
                     });
                     data[this.id] = arraytemp;
+                } else if (item.attr('controltype') == 'textxml') {
+                    data[this.id] = item[0].contentWindow.getValue();
                 } else {
                     data[this.id] = item.val();
                 }

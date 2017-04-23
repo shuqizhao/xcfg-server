@@ -143,10 +143,10 @@ func GetUser(id int) User {
 func UpdatePwd(id int, pwd string) bool {
 	o := orm.NewOrm()
 	user := User{Id: id}
-	err := o.Read(&user)
+	//err := o.Read(&user)
 	if o.Read(&user) == nil {
 		user.Pwd = pwd
-		if _, err = o.Update(&user, "pwd"); err == nil {
+		if _, err := o.Update(&user, "pwd"); err == nil {
 			return true
 		}
 	}

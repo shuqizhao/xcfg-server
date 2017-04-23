@@ -71,7 +71,7 @@ func (c *RoleController) GetRoleMenus() {
 		right = append(right, models.IdNameViewModel{v.MenuId, v.MenuName})
 		rightMap[v.MenuId] = v.MenuName
 	}
-	menus := models.GetMenus()
+	menus := models.GetResources()
 	left := []models.IdNameViewModel{}
 	for _, v := range menus {
 		_, ok := rightMap[v.Id]
