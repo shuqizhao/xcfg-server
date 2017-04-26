@@ -46,15 +46,15 @@ func init() {
 	beego.Router("/cfg/update", &controllers.CfgController{}, "post:UpdateCfg")
 
 	var FilterUser = func(ctx *context.Context) {
-		if ctx.Request.RequestURI == "/notfound" || ctx.Request.RequestURI == "/" {
+		requestURI := ctx.Request.RequestURI
+		if requestURI == "/notfound" || requestURI == "/" || requestURI == "/ConfigVersionHandler.ashx" || strings.HasPrefix(requestURI, "/xcfg/get") {
 			return
 		}
 		isPass := false
 		//白名单
 		menus := models.GetWhiteListByMenuIds()
 		for _, v := range menus {
-			//fmt.Println(v.Url, ctx.Request.RequestURI)
-			if strings.HasPrefix(ctx.Request.RequestURI, v.Url) {
+			if strings.HasPrefix(requestURI, v.Url) {
 				isPass = true
 			}
 		}
@@ -64,7 +64,7 @@ func init() {
 		}
 		//需要登录
 		adAuthCookie := ctx.Input.Cookie("adAuthCookie")
-		if adAuthCookie != "true" && ctx.Request.RequestURI != "/" {
+		if adAuthCookie != "true" && requestURI != "/" {
 			ctx.Redirect(302, "/")
 		}
 		//用户权限
@@ -82,7 +82,7 @@ func init() {
 			}
 			menus := models.GetResourcesByMenuIds(menuIds)
 			for _, v := range menus {
-				if strings.HasPrefix(ctx.Request.RequestURI, v.Url) {
+				if strings.HasPrefix(requestURI, v.Url) {
 					isPass = true
 				}
 			}

@@ -72,6 +72,11 @@ func AddCfg(cfgName string, appName string, cfgFile string, env string) int64 {
 	cfg.UpdateTime = cfg.CreateTime
 	id, err := o.Insert(&cfg)
 	if err == nil {
+		GetRedisClient().Put(strconv.FormatInt(id, 10), cfg.CfgFile, time.Hour*24*360)
+		idKey := cfg.CfgName + "_" + cfg.AppName + "_" + cfg.Environment + "_idKey"
+		minorKey := cfg.CfgName + "_" + cfg.AppName + "_" + cfg.Environment + "_minorKey"
+		GetRedisClient().Put(idKey, strconv.FormatInt(id, 10), time.Hour*24*360)
+		GetRedisClient().Put(minorKey, cfg.MinorVersion, time.Hour*24*360)
 		return id
 	} else {
 		return 0
@@ -109,7 +114,41 @@ func GetCfgsByPage(offset int64, length int64, cfg CfgInputViewModel, env string
 	return cfgs, count
 }
 
+func GetCfgByMinorByRedis(cfgName string, appName string, env string, minor int) int {
+	idKey := cfgName + "_" + appName + "_" + env + "_idKey"
+	minorKey := cfgName + "_" + appName + "_" + env + "_minorKey"
+
+	idKeyNoAppName := cfgName + "_" + "_" + env + "_idKey"
+	minorKeyNoAppName := cfgName + "_" + "_" + env + "_minorKey"
+	if GetRedisClient().IsExist(minorKey) {
+		minorStr := string(GetRedisClient().Get(minorKey).([]uint8))
+		minorInt, _ := strconv.Atoi(minorStr)
+		//fmt.Println(minor, minorInt)
+		if minor < minorInt {
+			idStr := string(GetRedisClient().Get(idKey).([]uint8))
+			id, _ := strconv.Atoi(idStr)
+			return id
+		} else {
+			return 0
+		}
+	} else if GetRedisClient().IsExist(minorKeyNoAppName) {
+		minorStr := string(GetRedisClient().Get(minorKeyNoAppName).([]uint8))
+		minorInt, _ := strconv.Atoi(minorStr)
+		//fmt.Println("minorKeyNoAppName", minor, minorInt)
+		if minor < minorInt {
+			idStr := string(GetRedisClient().Get(idKeyNoAppName).([]uint8))
+			id, _ := strconv.Atoi(idStr)
+			return id
+		} else {
+			return 0
+		}
+	} else {
+		return GetCfgByMinor(cfgName, appName, env, minor)
+	}
+}
+
 func GetCfgByMinor(cfgName string, appName string, env string, minor int) int {
+
 	o := orm.NewOrm()
 	qs := o.QueryTable("Cfg")
 	qs = qs.Filter("cfg_name", cfgName)
@@ -124,6 +163,10 @@ func GetCfgByMinor(cfgName string, appName string, env string, minor int) int {
 	count, _ := qs.Count()
 
 	if count >= 1 {
+		idKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_idKey"
+		minorKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_minorKey"
+		GetRedisClient().Put(idKey, cfgs[0].Id, time.Hour*24*360)
+		GetRedisClient().Put(minorKey, cfgs[0].MinorVersion, time.Hour*24*360)
 		return cfgs[0].Id
 	} else {
 		qs := o.QueryTable("Cfg")
@@ -137,6 +180,10 @@ func GetCfgByMinor(cfgName string, appName string, env string, minor int) int {
 		qs.Limit(1).All(&cfgs)
 		count, _ := qs.Count()
 		if count >= 1 {
+			idKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_idKey"
+			minorKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_minorKey"
+			GetRedisClient().Put(idKey, cfgs[0].Id, time.Hour*24*360)
+			GetRedisClient().Put(minorKey, cfgs[0].MinorVersion, time.Hour*24*360)
 			return cfgs[0].Id
 		} else {
 			return 0
@@ -160,18 +207,25 @@ func GetCfg(id int) Cfg {
 }
 
 func GetCfgFile(id int) string {
-	o := orm.NewOrm()
-	cfg := Cfg{Id: id}
-	err := o.Read(&cfg)
-
-	if err == orm.ErrNoRows {
-		fmt.Println("查询不到")
-	} else if err == orm.ErrMissPK {
-		fmt.Println("找不到主键")
+	var key = strconv.Itoa(id)
+	if GetRedisClient().IsExist(key) {
+		return string(GetRedisClient().Get(key).([]uint8))
 	} else {
-		fmt.Println(cfg.Id, cfg.CfgName)
+		o := orm.NewOrm()
+		cfg := Cfg{Id: id}
+		err := o.Read(&cfg)
+
+		if err == orm.ErrNoRows {
+			fmt.Println("查询不到")
+		} else if err == orm.ErrMissPK {
+			fmt.Println("找不到主键")
+		} else {
+			fmt.Println(cfg.Id, cfg.CfgName)
+		}
+		GetRedisClient().Put(strconv.Itoa(cfg.Id), cfg.CfgFile, time.Hour*24*360)
+		return cfg.CfgFile
 	}
-	return cfg.CfgFile
+
 }
 
 func UpdateCfg(cfg CfgUpdateViewModel) bool {
@@ -193,6 +247,11 @@ func UpdateCfg(cfg CfgUpdateViewModel) bool {
 
 		newcfg.UpdateTime = time.Now().Format("2006-01-02 15:04:05")
 		if _, err := o.Update(&newcfg, "cfg_file", "minor_version", "update_time"); err == nil {
+			GetRedisClient().Put(cfg.Id, newcfg.CfgFile, time.Hour*24*360)
+			idKey := newcfg.CfgName + "_" + newcfg.AppName + "_" + newcfg.Environment + "_idKey"
+			minorKey := newcfg.CfgName + "_" + newcfg.AppName + "_" + newcfg.Environment + "_minorKey"
+			GetRedisClient().Put(idKey, newcfg.Id, time.Hour*24*360)
+			GetRedisClient().Put(minorKey, newcfg.MinorVersion, time.Hour*24*360)
 			return true
 		}
 	}

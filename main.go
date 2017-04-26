@@ -19,7 +19,7 @@ func init() {
 	orm.RegisterModel(new(models.CfgHistory))
 
 	orm.RegisterDriver("mysql", orm.DRMySQL)
-	orm.RegisterDataBase("default", "mysql", "root:123@tcp(10.211.55.4:3306)/God?charset=utf8", 30, 30)
+	orm.RegisterDataBase("default", "mysql", beego.AppConfig.String("mysqlconn"), 30, 30)
 }
 
 func main() {

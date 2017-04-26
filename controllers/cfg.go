@@ -23,7 +23,7 @@ func (c *CfgController) Post() {
 	xml.Unmarshal(c.Ctx.Input.RequestBody, &rcfgResult)
 	var sections = make([]*models.RemoteConfigSection, 0)
 	for _, v := range rcfgResult.Sections {
-		id := models.GetCfgByMinor(v.SectionName, rcfgResult.Application, rcfgResult.Environment, v.MinorVersion)
+		id := models.GetCfgByMinorByRedis(v.SectionName, rcfgResult.Application, rcfgResult.Environment, v.MinorVersion)
 		if id > 0 {
 			v.DownloadUrl = "xcfg/get?id=" + strconv.Itoa(id)
 			sections = append(sections, &models.RemoteConfigSection{v.SectionName, 0, 0, v.DownloadUrl})
@@ -31,7 +31,7 @@ func (c *CfgController) Post() {
 
 	}
 	rcfgResult.Sections = sections
-	fmt.Println(rcfgResult.Machine, rcfgResult.Application)
+	//fmt.Println(rcfgResult.Machine, rcfgResult.Application)
 	c.Data["xml"] = &rcfgResult
 	c.ServeXML()
 }
