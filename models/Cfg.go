@@ -115,15 +115,19 @@ func GetCfgsByPage(offset int64, length int64, cfg CfgInputViewModel, env string
 }
 
 func GetCfgByMinorByRedis(cfgName string, appName string, env string, minor int) int {
+	if minor < 0 {
+		return 0
+	}
 	idKey := cfgName + "_" + appName + "_" + env + "_idKey"
 	minorKey := cfgName + "_" + appName + "_" + env + "_minorKey"
 
 	idKeyNoAppName := cfgName + "_" + "_" + env + "_idKey"
 	minorKeyNoAppName := cfgName + "_" + "_" + env + "_minorKey"
+
 	if GetRedisClient().IsExist(minorKey) {
 		minorStr := string(GetRedisClient().Get(minorKey).([]uint8))
 		minorInt, _ := strconv.Atoi(minorStr)
-		//fmt.Println(minor, minorInt)
+		fmt.Println("minorKey", cfgName, minor, minorInt)
 		if minor < minorInt {
 			idStr := string(GetRedisClient().Get(idKey).([]uint8))
 			id, _ := strconv.Atoi(idStr)
@@ -134,7 +138,7 @@ func GetCfgByMinorByRedis(cfgName string, appName string, env string, minor int)
 	} else if GetRedisClient().IsExist(minorKeyNoAppName) {
 		minorStr := string(GetRedisClient().Get(minorKeyNoAppName).([]uint8))
 		minorInt, _ := strconv.Atoi(minorStr)
-		//fmt.Println("minorKeyNoAppName", minor, minorInt)
+		fmt.Println("minorKeyNoAppName", cfgName, minor, minorInt)
 		if minor < minorInt {
 			idStr := string(GetRedisClient().Get(idKeyNoAppName).([]uint8))
 			id, _ := strconv.Atoi(idStr)
@@ -156,12 +160,12 @@ func GetCfgByMinor(cfgName string, appName string, env string, minor int) int {
 		qs = qs.Filter("app_name", appName)
 	}
 	qs = qs.Filter("environment", env)
-	qs = qs.Filter("minor_version__gt", minor)
+	qs = qs.Filter("minor_version__gte", minor)
 
 	var cfgs []*Cfg
 	qs.Limit(1).All(&cfgs)
 	count, _ := qs.Count()
-
+	//包含appname且版本匹配
 	if count >= 1 {
 		idKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_idKey"
 		minorKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_minorKey"
@@ -170,22 +174,45 @@ func GetCfgByMinor(cfgName string, appName string, env string, minor int) int {
 		return cfgs[0].Id
 	} else {
 		qs := o.QueryTable("Cfg")
-		if cfgName != "" {
-			qs = qs.Filter("cfg_name", cfgName)
+		qs = qs.Filter("cfg_name", cfgName)
+		if appName != "" {
+			qs = qs.Filter("app_name", appName)
 		}
 		qs = qs.Filter("environment", env)
-		qs = qs.Filter("minor_version__gt", minor)
-
-		var cfgs []*Cfg
-		qs.Limit(1).All(&cfgs)
 		count, _ := qs.Count()
-		if count >= 1 {
-			idKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_idKey"
-			minorKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_minorKey"
-			GetRedisClient().Put(idKey, cfgs[0].Id, time.Hour*24*360)
-			GetRedisClient().Put(minorKey, cfgs[0].MinorVersion, time.Hour*24*360)
-			return cfgs[0].Id
+		//包含appname但是版本达不到
+		if count == 0 {
+			qs := o.QueryTable("Cfg")
+			if cfgName != "" {
+				qs = qs.Filter("cfg_name", cfgName)
+			}
+			qs = qs.Filter("environment", env)
+			qs = qs.Filter("minor_version__gte", minor)
+
+			var cfgs []*Cfg
+			qs.Limit(1).All(&cfgs)
+			count, _ := qs.Count()
+			//不包含appname但版本达到
+			if count >= 1 {
+				idKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_idKey"
+				minorKey := cfgs[0].CfgName + "_" + cfgs[0].AppName + "_" + env + "_minorKey"
+				GetRedisClient().Put(idKey, cfgs[0].Id, time.Hour*24*360)
+				GetRedisClient().Put(minorKey, cfgs[0].MinorVersion, time.Hour*24*360)
+				return cfgs[0].Id
+			} else {
+				//不包含appname但版本达不到
+				idKey := cfgName + "_" + "_" + env + "_idKey"
+				minorKey := cfgName + "_" + "_" + env + "_minorKey"
+				GetRedisClient().Put(idKey, 0, time.Hour*24*360)
+				GetRedisClient().Put(minorKey, 0, time.Hour*24*360)
+				return 0
+			}
 		} else {
+			//包含appname但版本达不到
+			idKey := cfgName + "_" + appName + "_" + env + "_idKey"
+			minorKey := cfgName + "_" + appName + "_" + env + "_minorKey"
+			GetRedisClient().Put(idKey, 0, time.Hour*24*360)
+			GetRedisClient().Put(minorKey, 0, time.Hour*24*360)
 			return 0
 		}
 	}
