@@ -7,3 +7,6 @@ golang 远程配置文件服务器
   3,启用xcfg-server后请在mysql中执行data.sql脚本初始化数据<br/>
   4,初始化用户名和密码分别为admin和123<br/>
   5,客户端案列请参考我的资源xcfg-demo<br/>
+![image](https://github.com/shuqizhao/xcfg-demo/blob/master/1.png)
+![image](https://github.com/shuqizhao/xcfg-demo/blob/master/2.png)
+![image](https://github.com/shuqizhao/xcfg-demo/blob/master/3.png)
