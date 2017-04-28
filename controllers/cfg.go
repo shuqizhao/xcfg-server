@@ -58,7 +58,6 @@ func (c *CfgController) AddCfg() {
 
 func (c *CfgController) Exists() {
 	env := c.GetString("env")
-	fmt.Println(env)
 	var cfg models.Cfg
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
 	data := 0
