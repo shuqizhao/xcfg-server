@@ -1,7 +1,12 @@
 
-INSERT INTO `user` VALUES ('1', 'admin', '123', '1', '0', now(), null, null, null, now(), null)
+INSERT INTO `user` VALUES 
+('1', 'admin', '123', '0', '1', now(), 0, now(),0, now()),
+('2', 'dev', '123', '0', '1', now(), 0, now(),0, now()),
+('3', 'testing', '123', '0', '1', now(), 0, now(),0, now()),
+('4', 'labs', '123', '0', '1', now(), 0, now(),0, now()),
+('5', 'prod', '123', '0', '1', now(), 0, now(),0, now());
 
-go
+
 
 INSERT INTO `menu` 
 VALUES 
@@ -55,10 +60,54 @@ VALUES
 ('48', '权限管理-检查密码', '1', '/auth/checkpwd', '0', '1', '2', now(), 0, now(), 0),
 ('49', '权限管理-修改密码', '1', '/auth/mod', '0', '1', '2', now(), 0, now(), 0),
 ('50', '权限管理-获取菜单', '1', '/auth/menus', '0', '1', '2', now(), 0, now(), 0);
-go
+
 
 INSERT INTO `role` VALUES 
-('1', 'dev', '1', '0', now(), '0', now(), '0'), 
-('2', 'testing', '1', '0', now(), '0', now(), '0'), 
-('3', 'labs', '1', '0', now(), '0', now(), '0'), 
-('4', 'prod', '1', '0', now(), '0', now(), '0')
+('1', 'dev', '0', '1', now(), '0', now(), '0'), 
+('2', 'testing', '0', '1', now(), '0', now(), '0'), 
+('3', 'labs', '0', '1', now(), '0', now(), '0'), 
+('4', 'prod', '0', '1', now(), '0', now(), '0');
+
+
+INSERT INTO `rel_user_role` VALUES 
+('1', '2', '', '1', 'dev'), 
+('2', '3', '', '2', 'testing'),
+('3', '4', '', '3', 'labs'),
+('4', '5', '', '4', 'prod');
+
+
+
+INSERT INTO `rel_role_menu`(id,menu_id,menu_name,role_id,role_name) VALUES 
+('45', '5', '配置文件', '1', ''), 
+('46', '6', '开发配置文件', '1', ''), 
+('47', '25', '配置文件-列表dev', '1', ''), 
+('48', '26', '配置文件-添加dev', '1', ''), 
+('49', '27', '配置文件-是否存在dev', '1', ''), 
+('50', '28', '配置文件-获取dev', '1', ''), 
+('51', '29', '配置文件-更新dev', '1', ''), 
+('52', '5', '配置文件', '2', ''), 
+('53', '7', '测试配置文件', '2', ''), 
+('54', '30', '配置文件-列表testing', '2', ''), 
+('55', '31', '配置文件-添加testing', '2', ''), 
+('56', '32', '配置文件-是否存在testing', '2', ''), 
+('57', '33', '配置文件-获取testing', '2', ''), 
+('58', '34', '配置文件-更新testing', '2', ''), 
+('59', '5', '配置文件', '3', ''), 
+('60', '8', '实验配置文件', '3', ''), 
+('61', '35', '配置文件-列表labs', '3', ''), 
+('62', '36', '配置文件-添加labs', '3', ''), 
+('63', '37', '配置文件-是否存在labs', '3', ''), 
+('64', '38', '配置文件-获取labs', '3', ''), 
+('65', '39', '配置文件-更新labs', '3', ''), 
+('66', '5', '配置文件', '4', ''), 
+('67', '9', '线上配置文件', '4', ''), 
+('68', '40', '配置文件-列表prod', '4', ''), 
+('69', '41', '配置文件-添加prod', '4', ''), 
+('70', '42', '配置文件-是否存在prod', '4', ''), 
+('71', '43', '配置文件-获取prod', '4', ''), 
+('72', '44', '配置文件-更新prod', '4', '');
+
+
+INSERT INTO `cfg` VALUES 
+('1', '', 'amqp-settings', '1', '1', '<?xml version=\'1.0\' encoding=\'utf-8\' ?><amqp-settings majorVersion=\"1\" minorVersion=\"1\"><servers><server name=\"default\" uri=\"amqp://abc\"></server><server name=\"abc\" uri=\"amqp://def\"></server><server name=\"def\" uri=\"amqp://ghi\"></server>\n    </servers>\n<exchanges><exchange server=\"default\" name=\"abc\" type=\"direct\" durable=\"true\" autoDelete=\"false\"></exchange><exchange server=\"default\" name=\"def\" type=\"direct\" durable=\"true\" autoDelete=\"false\"></exchange>\n       \n    </exchanges>\n<queues><queue name=\"abc\" server=\"default\" exchange=\"abc\" durable=\"true\" auto-delete=\"false\" need-ack=\"false\" exclusive=\"true\"></queue><queue name=\"def\" server=\"default\" exchange=\"abc\" durable=\"true\" auto-delete=\"false\" need-ack=\"false\" exclusive=\"true\"></queue>\n    </queues>\n\n</amqp-settings>\n', 'dev', now(), '0', now(), '0'), 
+('2', 'Cfg4goTest', 'RecruitWechatNoticeConfiguration', '1', '1', '<?xml version=\'1.0\' encoding=\'utf-8\' ?><RecruitWechatNoticeConfiguration majorVersion=\"1\" minorVersion=\"1\"><SenderConfigurations><SenderConfiguration><GroupName>ReumeComplaint</GroupName><CorpSecret>a</CorpSecret><CorpId>wx4aa6233fe9f75f5e</CorpId><AgentId>1</AgentId><ToParty>2|3</ToParty>\n        </SenderConfiguration>\n<SenderConfiguration><GroupName>ReumeRepair</GroupName><CorpSecret>b</CorpSecret><CorpId>wx4aa6233fe9f75f5e</CorpId><AgentId>2</AgentId><ToParty>2</ToParty>\n        </SenderConfiguration>\n<SenderConfiguration><GroupName>ResumeAlert</GroupName><CorpSecret>c</CorpSecret><CorpId>wx4aa6233fe9f75f5e</CorpId><AgentId>3</AgentId><ToParty>2</ToParty>\n        </SenderConfiguration>\n\n    </SenderConfigurations>\n\n</RecruitWechatNoticeConfiguration>\n', 'dev', now(), '0', now(), '0')
