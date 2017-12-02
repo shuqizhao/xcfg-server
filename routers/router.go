@@ -39,9 +39,9 @@ func init() {
 
 	beego.Router("/ConfigVersionHandler.ashx", &controllers.CfgController{}, "post:Post")
 	beego.Router("/cfg/list", &controllers.CfgController{}, "post:GetCfgs")
-	beego.Router("/cfghistroy/list", &controllers.CfgHistroyController{}, "post:GetCfgHistorys")
-	beego.Router("/cfghistroy/rollback", &controllers.CfgHistroyController{}, "post:RollBack")
-	beego.Router("/cfghistroy/get", &controllers.CfgHistroyController{}, "get:Get")
+	beego.Router("/cfghistory/list", &controllers.CfgHistroyController{}, "post:GetCfgHistorys")
+	beego.Router("/cfghistory/rollback", &controllers.CfgHistroyController{}, "post:RollBack")
+	beego.Router("/cfghistory/get", &controllers.CfgHistroyController{}, "get:Get")
 	beego.Router("/cfg/add", &controllers.CfgController{}, "post:AddCfg")
 	beego.Router("/cfg/exists", &controllers.CfgController{}, "post:Exists")
 	beego.Router("/cfg/get", &controllers.CfgController{}, "get:GetCfg")

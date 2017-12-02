@@ -9,7 +9,7 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
             self.searchDataTable = new SearchDataTable({
                 el: self.el,
                 cfg: {
-                    'url': '/cfghistroy/list?id=' + self.queryObject.id,
+                    'url': '/cfghistory/list?id=' + self.queryObject.id,
                     'columns': [{
                         'title': 'Id',
                         'name': 'Id',
@@ -43,7 +43,7 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                     functions: {
                         common: [{
                             text: "回滚",
-                            url: 'cfghistroy/rollback',
+                            url: 'cfghistory/rollback',
                             limitSelected:1
                         }]
                     },
