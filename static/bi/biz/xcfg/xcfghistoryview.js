@@ -37,7 +37,7 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                         'type': 'timer'
                     }],
                     "fnRowCallback": function(row, data) {
-                        $('td:eq(1)', row).html('<a href="/xcfg/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
+                        $('td:eq(1)', row).html('<a href="/xcfghistory/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
                     },
                     idName: 'Id',
                     functions: {

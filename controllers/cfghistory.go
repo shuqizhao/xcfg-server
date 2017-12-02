@@ -32,3 +32,10 @@ func (c *CfgHistroyController) RollBack() {
 	c.Data["json"] = &jsonResult
 	c.ServeJSON()
 }
+
+func (c *CfgHistroyController) Get() {
+	id, _ := c.GetInt("id")
+	cfgFile := models.GetCfgHistoryFile(id)
+	c.Ctx.Output.ContentType("application/xml")
+	c.Ctx.Output.Body([]byte(cfgFile))
+}

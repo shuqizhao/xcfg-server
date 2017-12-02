@@ -3,6 +3,8 @@ package models
 import (
 	"github.com/astaxie/beego/orm"
 	"strconv"
+	"fmt"
+	"time"
 )
 
 type CfgHistory struct {
@@ -89,4 +91,21 @@ func RollBack(cfgHistoryId string) int64 {
 		UpdateCfg(cfgUpdateViewModel)
 	}
 	return 0
+}
+
+func GetCfgHistoryFile(id int) string {
+	o := orm.NewOrm()
+	cfg := CfgHistory{Id: id}
+	err := o.Read(&cfg)
+
+	if err == orm.ErrNoRows {
+		fmt.Println("查询不到")
+	} else if err == orm.ErrMissPK {
+		fmt.Println("找不到主键")
+	} else {
+		fmt.Println(cfg.Id, cfg.CfgName)
+		GetRedisClient().Put(strconv.Itoa(cfg.Id), cfg.CfgFile, time.Hour*24*360)
+	}
+	return cfg.CfgFile
+
 }
