@@ -219,6 +219,15 @@ define(['backbone', 'text!searchDataTable.html', 'godModel', 'dataTable', 'modal
             var self = this;
             var tipMsg = $(e.target).text();
             var checks = self.$el.find(".searchDataTable").find(":checkbox[checked]");
+            if (limitSelected) {
+                if (limitSelected <= checks.length-1) {
+                    $.fn.message({
+                        msg: "只能选择" + limitSelected + "个对象！",
+                        type: "warning"
+                    });
+                    return;
+                }
+            }
             if (mode != 'skipcheck' && checks.length == 0) {
 
                 $.fn.message({

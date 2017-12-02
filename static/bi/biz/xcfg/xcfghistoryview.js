@@ -9,7 +9,7 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
             self.searchDataTable = new SearchDataTable({
                 el: self.el,
                 cfg: {
-                    'url': '/cfg/list?env=' + self.queryObject.env,
+                    'url': '/cfghistroy/list?id=' + self.queryObject.id,
                     'columns': [{
                         'title': 'Id',
                         'name': 'Id',
@@ -37,23 +37,16 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                         'type': 'timer'
                     }],
                     "fnRowCallback": function(row, data) {
-                        $('td:eq(2)', row).html('<a href="/xcfg/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
+                        $('td:eq(1)', row).html('<a href="/xcfg/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
                     },
                     idName: 'Id',
                     functions: {
                         common: [{
-                            text: "新建",
-                            url: 'xcfg/xcfgadd?env=' + self.queryObject.env,
-                            mode: 'navigate'
+                            text: "回滚",
+                            url: 'cfghistroy/rollback',
+                            limitSelected:1
                         }]
                     },
-                    operations: [{
-                        text: '查看',
-                        url: 'xcfg/xcfgview?env=' + self.queryObject.env
-                    },{
-                        text: '历史',
-                        url: 'xcfg/xcfghistoryview?env=' + self.queryObject.env
-                    }],
                 }
             });
             self.searchDataTable.render();

@@ -250,6 +250,7 @@ func GetCfgFile(id int) string {
 func UpdateCfg(cfg CfgUpdateViewModel) bool {
 	o := orm.NewOrm()
 	id, _ := strconv.Atoi(cfg.Id)
+	AddCfgHistory(id)
 	newcfg := Cfg{Id: id}
 	if o.Read(&newcfg) == nil {
 		el, err := LoadByXml(cfg.CfgFile)
