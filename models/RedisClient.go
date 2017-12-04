@@ -12,7 +12,7 @@ var redisCache cache.Cache
 
 func GetRedisClient() cache.Cache {
 	if redisCache == nil {
-		redis, err := cache.NewCache("redis", `{"conn":"`+beego.AppConfig.String("redisconn")+`", "key":"beecacheRedis"}`)
+		redis, err := cache.NewCache("redis", `{"conn":"`+beego.AppConfig.String("redisconn")+`", "key":"beecacheRedis","password":"`+beego.AppConfig.String("redispwd")+`"}`)
 		if err != nil {
 			log.Println(err, redis)
 		}

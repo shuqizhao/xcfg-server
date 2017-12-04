@@ -1,10 +1,12 @@
 package models
 
 import (
+	"regexp"
 	"fmt"
 	"strconv"
 	"strings"
 	"time"
+	"bytes"
 
 	"github.com/astaxie/beego/orm"
 )
@@ -52,20 +54,30 @@ func IsExistsCfg(cfgName string, appName string, env string) bool {
 }
 
 func AddCfg(cfgName string, appName string, cfgFile string, env string) int64 {
-	el, err := LoadByXml(cfgFile)
-	if err != nil {
-		fmt.Println("err", err)
-	}
-	el.RemoveAttr("majorVersion")
-	el.RemoveAttr("minorVersion")
-	el.AddAttr("majorVersion", "1")
-	el.AddAttr("minorVersion", "1")
+	// el, err := LoadByXml(cfgFile)
+	// if err != nil {
+	// 	fmt.Println("err", err)
+	// }
+	// el.RemoveAttr("majorVersion")
+	// el.RemoveAttr("minorVersion")
+	// el.AddAttr("majorVersion", "1")
+	// el.AddAttr("minorVersion", "1")
+	b := []byte(cfgFile)
+	reg := regexp.MustCompile(`\<\?.*?\?\>`)
+	rep := []byte("${1}")
+	cfgFile = string(reg.ReplaceAll(b, rep))
+	xmlDoc, _ := LoadDocument(strings.NewReader(cfgFile))
+	rootNode := xmlDoc.FirstChild().ToElement()
+	rootNode.SetAttribute("majorVersion","1")
+	rootNode.SetAttribute("minorVersion","1")
+	buf := bytes.NewBufferString("")
+	xmlDoc.Accept(NewSimplePrinter(buf, PrintStream))
 
 	o := orm.NewOrm()
 	var cfg Cfg
 	cfg.CfgName = cfgName
 	cfg.AppName = appName
-	cfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + el.ToString()
+	cfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + buf.String()
 	cfg.MajorVersion = 1
 	cfg.MinorVersion = 1
 	cfg.Environment = env
@@ -253,17 +265,31 @@ func UpdateCfg(cfg CfgUpdateViewModel) bool {
 	AddCfgHistory(id)
 	newcfg := Cfg{Id: id}
 	if o.Read(&newcfg) == nil {
-		el, err := LoadByXml(cfg.CfgFile)
-		if err != nil {
-			fmt.Println("err", err)
-		}
+		// el, err := LoadByXml(cfg.CfgFile)
+		// if err != nil {
+		// 	fmt.Println("err", err)
+		// }
+		// newcfg.MinorVersion++
+		// el.RemoveAttr("majorVersion")
+		// el.RemoveAttr("minorVersion")
+		// el.AddAttr("majorVersion", "1")
+		// el.AddAttr("minorVersion", strconv.Itoa(newcfg.MinorVersion))
+		// //fmt.Println(el.ToString())
+		// newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + el.ToString()
+
 		newcfg.MinorVersion++
-		el.RemoveAttr("majorVersion")
-		el.RemoveAttr("minorVersion")
-		el.AddAttr("majorVersion", "1")
-		el.AddAttr("minorVersion", strconv.Itoa(newcfg.MinorVersion))
-		//fmt.Println(el.ToString())
-		newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + el.ToString()
+		b := []byte(cfg.CfgFile)
+		reg := regexp.MustCompile(`\<\?.*?\?\>`)
+		rep := []byte("${1}")
+		cfg.CfgFile = string(reg.ReplaceAll(b, rep))
+		xmlDoc, _ := LoadDocument(strings.NewReader(cfg.CfgFile))
+		rootNode := xmlDoc.FirstChild().ToElement()
+		rootNode.SetAttribute("majorVersion","1")
+		rootNode.SetAttribute("minorVersion",strconv.Itoa(newcfg.MinorVersion))
+		buf := bytes.NewBufferString("")
+		xmlDoc.Accept(NewSimplePrinter(buf, PrintStream))
+		//fmt.Println(buf.String())
+		newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + buf.String()
 
 		newcfg.UpdateTime = time.Now().Format("2006-01-02 15:04:05")
 		if _, err := o.Update(&newcfg, "cfg_file", "minor_version", "update_time"); err == nil {
