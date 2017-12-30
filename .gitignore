@@ -2,6 +2,9 @@
 *.o
 *.a
 *.so
+*.amd64
+*.sh
+*.conf
 
 # Folders
 _obj
