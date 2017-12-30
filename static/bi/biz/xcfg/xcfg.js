@@ -42,8 +42,12 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                     idName: 'Id',
                     functions: {
                         common: [{
-                            text: "新建",
+                            text: "新建标准配置文件",
                             url: 'xcfg/xcfgadd?env=' + self.queryObject.env,
+                            mode: 'navigate'
+                        },{
+                            text: "新建Apollo模板",
+                            url: 'xcfg/xcfgapolloadd?env=' + self.queryObject.env,
                             mode: 'navigate'
                         }]
                     },

@@ -75,5 +75,6 @@ GodData = {
         '/static/bi/biz/xcfg/xcfgadd.js',
         '/static/bi/biz/xcfg/xcfgview.js',
         '/static/bi/biz/xcfg/xcfghistoryview.js',
+        '/static/bi/biz/xcfg/xcfgapolloadd.js'
     ]
 };

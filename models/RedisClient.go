@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/astaxie/beego"
@@ -12,7 +13,13 @@ var redisCache cache.Cache
 
 func GetRedisClient() cache.Cache {
 	if redisCache == nil {
-		redis, err := cache.NewCache("redis", `{"conn":"`+beego.AppConfig.String("redisconn")+`", "key":"beecacheRedis","password":"`+beego.AppConfig.String("redispwd")+`"}`)
+		redisPwd := beego.AppConfig.String("redispwd")
+		redisConn := `{"conn":"`+beego.AppConfig.String("redisconn")+`", "key":"beecacheRedis","password":"`+redisPwd+`"}`
+		if redisPwd == ""{
+			redisConn = `{"conn":"`+beego.AppConfig.String("redisconn")+`", "key":"beecacheRedis"}`
+		}
+		fmt.Println(redisConn)
+		redis, err := cache.NewCache("redis", redisConn)
 		if err != nil {
 			log.Println(err, redis)
 		}

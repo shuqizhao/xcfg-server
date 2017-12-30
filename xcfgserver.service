@@ -1,0 +1,18 @@
+[Unit]
+
+Description= xcfgserver.
+Wants=remote-fs.target network.target
+Before=network.target network.service
+
+[Service]
+
+Type=simple
+
+ExecStart=/god/apps/xcfg-server/xcfgserver.linux.amd64
+WorkingDirectory=/god/apps/xcfg-server
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=xcfgserver
+[Install]
+
+WantedBy=multi-user.target
