@@ -14,7 +14,7 @@ define(['backbone', 'form', 'godModel'], function(Backbone, Form, GodModel) {
                 cfg: {
                     'title': '新建配置文件',
                     'mode': 'create',
-                    'save': '/cfg/add?env=' + env,
+                    'save': '/cfg/add?env=' + env + '&type=0',
                     'items': [{
                         'name': 'Id',
                         'type': 'hidden'

@@ -18,6 +18,8 @@ type Cfg struct {
 	MajorVersion int
 	MinorVersion int
 	CfgFile      string `orm:"type(text)"`
+	CfgType string
+	ApolloTemplate string `orm:"type(text)"`
 	Environment  string
 	CreateTime   string
 	CreateBy     int
@@ -53,7 +55,7 @@ func IsExistsCfg(cfgName string, appName string, env string) bool {
 	return qs.Exist()
 }
 
-func AddCfg(cfgName string, appName string, cfgFile string, env string) int64 {
+func AddCfg(cfgName string, appName string, cfgFile string, env string,apolloTemplate string,cfgType string) int64 {
 	// el, err := LoadByXml(cfgFile)
 	// if err != nil {
 	// 	fmt.Println("err", err)
@@ -83,6 +85,8 @@ func AddCfg(cfgName string, appName string, cfgFile string, env string) int64 {
 	cfg.Environment = env
 	cfg.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	cfg.UpdateTime = cfg.CreateTime
+	cfg.CfgType = cfgType
+	cfg.ApolloTemplate = apolloTemplate
 	id, err := o.Insert(&cfg)
 	if err == nil {
 		GetRedisClient().Put(strconv.FormatInt(id, 10), cfg.CfgFile, time.Hour*24*360)

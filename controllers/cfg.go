@@ -48,9 +48,10 @@ func (c *CfgController) Get() {
 
 func (c *CfgController) AddCfg() {
 	env := c.GetString("env")
+	cfgType := c.GetString("type")
 	var cfg models.Cfg
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
-	models.AddCfg(cfg.CfgName, cfg.AppName, cfg.CfgFile, env)
+	models.AddCfg(cfg.CfgName, cfg.AppName, cfg.CfgFile, env,cfg.ApolloTemplate,cfgType)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
 	c.ServeJSON()
