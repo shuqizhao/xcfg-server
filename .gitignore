@@ -5,6 +5,7 @@
 *.amd64
 *.sh
 *.conf
+*.exe~
 
 # Folders
 _obj
