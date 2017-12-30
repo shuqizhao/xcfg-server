@@ -46,7 +46,7 @@ define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'date
                             self.$el.html(self.template(data));
                         }
                         if (self.options.cfg.afterEditRender) {
-                            self.options.cfg.afterEditRender();
+                            self.options.cfg.afterEditRender(self.options.cfg.detailEditMode,detail.data);
                         }
                     },
                     error: function() {}

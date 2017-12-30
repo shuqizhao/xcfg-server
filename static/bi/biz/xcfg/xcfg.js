@@ -25,6 +25,9 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                     }, {
                         'title': '版本号',
                         'name': 'MinorVersion'
+                    },{
+                        'title': '类型',
+                        'name': 'CfgType'
                     }, {
                         'title': '创建时间',
                         'name': 'CreateTime',
@@ -38,6 +41,11 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                     }],
                     "fnRowCallback": function(row, data) {
                         $('td:eq(2)', row).html('<a href="/xcfg/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
+                        if(data.CfgType=="" || data.CfgType=="0"){
+                            $('td:eq(5)', row).html('标准');
+                        }else{
+                            $('td:eq(5)', row).html('Apollo');
+                        }
                     },
                     idName: 'Id',
                     functions: {

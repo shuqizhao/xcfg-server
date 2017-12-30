@@ -46,6 +46,8 @@ type CfgInputViewModel struct {
 type CfgUpdateViewModel struct {
 	Id      string
 	CfgFile string
+	CfgType string
+	ApolloTemplate string
 }
 
 func IsExistsCfg(cfgName string, appName string, env string) bool {
@@ -86,7 +88,7 @@ func AddCfg(cfgName string, appName string, cfgFile string, env string,apolloTem
 	cfg.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 	cfg.UpdateTime = cfg.CreateTime
 	cfg.CfgType = cfgType
-	cfg.ApolloTemplate = apolloTemplate
+	cfg.ApolloTemplate = strings.Trim(apolloTemplate," ")
 	id, err := o.Insert(&cfg)
 	if err == nil {
 		GetRedisClient().Put(strconv.FormatInt(id, 10), cfg.CfgFile, time.Hour*24*360)
@@ -294,9 +296,11 @@ func UpdateCfg(cfg CfgUpdateViewModel) bool {
 		xmlDoc.Accept(NewSimplePrinter(buf, PrintStream))
 		//fmt.Println(buf.String())
 		newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + buf.String()
+		
+		newcfg.ApolloTemplate = strings.Trim(cfg.ApolloTemplate," ")
 
 		newcfg.UpdateTime = time.Now().Format("2006-01-02 15:04:05")
-		if _, err := o.Update(&newcfg, "cfg_file", "minor_version", "update_time"); err == nil {
+		if _, err := o.Update(&newcfg, "cfg_file", "minor_version", "update_time","apollo_template"); err == nil {
 			GetRedisClient().Put(cfg.Id, newcfg.CfgFile, time.Hour*24*360)
 			idKey := newcfg.CfgName + "_" + newcfg.AppName + "_" + newcfg.Environment + "_idKey"
 			minorKey := newcfg.CfgName + "_" + newcfg.AppName + "_" + newcfg.Environment + "_minorKey"

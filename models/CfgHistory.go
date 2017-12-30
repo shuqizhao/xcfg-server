@@ -19,6 +19,8 @@ type CfgHistory struct {
 	UpdateTime   string
 	UpdateBy     int
 	CfgFile      string `orm:"type(text)"`
+	CfgType string
+	ApolloTemplate string `orm:"type(text)"`
 	Environment  string
 }
 
@@ -67,6 +69,8 @@ func AddCfgHistory(cfgId int) int64 {
 		cfgHistroy.MajorVersion = newcfg.MajorVersion
 		cfgHistroy.MinorVersion = newcfg.MinorVersion
 		cfgHistroy.Environment = newcfg.Environment
+		cfgHistroy.ApolloTemplate = newcfg.ApolloTemplate
+		cfgHistroy.CfgType = newcfg.CfgType
 		cfgHistroy.CreateTime = newcfg.CreateTime
 		cfgHistroy.UpdateTime = newcfg.UpdateTime
 		id, err := o.Insert(&cfgHistroy)
@@ -88,6 +92,8 @@ func RollBack(cfgHistoryId string) int64 {
 		cfgUpdateViewModel:=CfgUpdateViewModel{}
 		cfgUpdateViewModel.Id = idStr
 		cfgUpdateViewModel.CfgFile = cfgHistory.CfgFile
+		cfgUpdateViewModel.ApolloTemplate=cfgHistory.ApolloTemplate
+		cfgUpdateViewModel.CfgType=cfgHistory.CfgType
 		UpdateCfg(cfgUpdateViewModel)
 	}
 	return 0

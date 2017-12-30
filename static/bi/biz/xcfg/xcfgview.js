@@ -1,10 +1,10 @@
-define(['backbone', 'form'], function(Backbone, Form) {
+define(['backbone', 'form'], function (Backbone, Form) {
     var mainView = Backbone.View.extend({
-        initialize: function(options) {
+        initialize: function (options) {
             this.options = options;
             this.queryObject = $.fn.getQueryObject();
         },
-        render: function() {
+        render: function () {
             var self = this;
             var form = new Form({
                 el: self.el,
@@ -35,10 +35,25 @@ define(['backbone', 'form'], function(Backbone, Form) {
                         'name': 'CfgFile',
                         'title': '文件内容',
                         'type': 'textxml'
+                    }, {
+                        'name': 'ApolloTemplate',
+                        'title': '模板内容',
+                        'type': 'textarea'
                     }],
-                    "afterEditRender": function() {
-                        $('#AppName').attr('disabled', true);
-                        $('#CfgName').attr('disabled', true);
+                    "afterEditRender": function (model,data) {
+                        if(model=="edit"){
+                            $('#AppName').attr('disabled', true);
+                            $('#CfgName').attr('disabled', true);
+                            if (data.CfgType!="1") {
+                                $('#ApolloTemplate').parent().parent().parent().hide()
+                            }
+                        }
+                        else
+                        {
+                            if (data.CfgType!="1") {
+                                $('.control-group :contains("模板内容")').parent().hide()
+                            }
+                        }
                     },
                     rules: {
                         CfgName: {
@@ -53,7 +68,7 @@ define(['backbone', 'form'], function(Backbone, Form) {
                             required: "配置文件必须填写"
                         }
                     },
-                    "validate": function(data) {
+                    "validate": function (data) {
                         var result = $.fn.validateXML(data['CfgFile'])
                         self = this
                         if (result.error_code == 0) {
