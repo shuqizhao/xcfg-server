@@ -26,7 +26,8 @@ func (c *CfgController) Post() {
 		id := models.GetCfgByMinorByRedis(v.SectionName, rcfgResult.Application, rcfgResult.Environment, v.MinorVersion)
 		if id > 0 {
 			v.DownloadUrl = "xcfg/get?id=" + strconv.Itoa(id)
-			sections = append(sections, &models.RemoteConfigSection{v.SectionName, 0, 0, v.DownloadUrl})
+			v.TemplateUrl = "xcfg/getTemplate?id=" + strconv.Itoa(id)
+			sections = append(sections, &models.RemoteConfigSection{v.SectionName, 0, 0, v.DownloadUrl,v.TemplateUrl})
 		}
 
 	}
@@ -44,6 +45,16 @@ func (c *CfgController) Get() {
 	cfgFile := models.GetCfgFile(id)
 	c.Ctx.Output.ContentType("application/xml")
 	c.Ctx.Output.Body([]byte(cfgFile))
+}
+
+/*
+	获取模板
+*/
+func (c *CfgController) GetTemplate() {
+	id, _ := c.GetInt("id")
+	cfg := models.GetCfg(id)
+	c.Ctx.Output.ContentType("text/plain")
+	c.Ctx.Output.Body([]byte(cfg.ApolloTemplate))
 }
 
 func (c *CfgController) AddCfg() {

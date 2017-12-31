@@ -46,6 +46,7 @@ func init() {
 	beego.Router("/cfg/exists", &controllers.CfgController{}, "post:Exists")
 	beego.Router("/cfg/get", &controllers.CfgController{}, "get:GetCfg")
 	beego.Router("/xcfg/get", &controllers.CfgController{}, "get:Get")
+	beego.Router("/xcfg/getTemplate", &controllers.CfgController{}, "get:GetTemplate")
 	beego.Router("/cfg/update", &controllers.CfgController{}, "post:UpdateCfg")
 
 	var FilterUser = func(ctx *context.Context) {

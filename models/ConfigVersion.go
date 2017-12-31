@@ -11,4 +11,5 @@ type RemoteConfigSection struct {
 	MajorVersion int    `xml:"majorVerion,attr"`
 	MinorVersion int    `xml:"minorVerion,attr"`
 	DownloadUrl  string `xml:"downloadUrl,attr"`
+	TemplateUrl  string `xml:"templateUrl,attr"`
 }
