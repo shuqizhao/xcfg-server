@@ -103,6 +103,9 @@ func (c *CfgController) GetCfg() {
 	cfgfileBytes := []byte(cfg.CfgFile)
 	encodeString := base64.StdEncoding.EncodeToString(cfgfileBytes)
 	cfg.CfgFile = encodeString
+	apolloTemplateBytes := []byte(cfg.ApolloTemplate)
+	encodeApolloTemplateString := base64.StdEncoding.EncodeToString(apolloTemplateBytes)
+	cfg.ApolloTemplate = encodeApolloTemplateString
 	jsonResult := models.JsonResult{Code: 200, Data: cfg}
 	c.Data["json"] = &jsonResult
 	c.ServeJSON()

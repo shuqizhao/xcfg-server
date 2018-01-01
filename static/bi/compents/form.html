@@ -107,6 +107,27 @@
                                                         }
                                                     </script>
                                                     <%}%>
+                                                    <%if(item.type=='textnginx'){%>
+                                                        <div class="control-group">
+                                                            <!-- Text input-->
+                                                            <label class="control-label"><%=item.title%></label>
+                                                            <div class="controls">
+                                                                <div class="iframe">
+                                                                    <iframe id="<%=item.name%>" name="<%=item.name%>" style='width:100%;' scrolling="no" frameborder="0" class="form-control" controltype='<%=item.type%>' src="/static/bi/compents/codemirrornginx.html"></iframe>
+                                                                </div>
+                                                                <p class="help-block">
+                                                                    <%=item.helpblock%>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <script>
+                                                            document.getElementById('<%=item.name%>').onload = function() {
+                                                                var words = CryptoJS.enc.Base64.parse('<%=detail[item.name]%>');
+                                                                var textString = CryptoJS.enc.Utf8.stringify(words);
+                                                                document.getElementById('<%=item.name%>').contentWindow.setValue(textString);
+                                                            }
+                                                        </script>
+                                                        <%}%>
 
                                                         <%if(item.type=='pwd'){%>
                                                             <div class="control-group">
@@ -390,6 +411,27 @@
                                                                                                                                                                             }
                                                                                                                                                                         </script>
                                                                                                                                                                         <%}%>
+                                                                                                                                                                        <%if(item.type=='textnginx'){%>
+                                                                                                                                                                            <div class="control-group">
+                                                                                                                                                                                <!-- Text input-->
+                                                                                                                                                                                <label class="control-label"><%=item.title%></label>
+                                                                                                                                                                                <div class="controls">
+                                                                                                                                                                                    <div class="iframe">
+                                                                                                                                                                                        <iframe id="<%=item.name%>" name="<%=item.name%>" style='width:100%;' scrolling="no" frameborder="0" class="form-control" controltype='<%=item.type%>' src="/static/bi/compents/codemirrornginx.html"></iframe>
+                                                                                                                                                                                    </div>
+                                                                                                                                                                                    <p class="help-block">
+                                                                                                                                                                                        <%=item.helpblock%>
+                                                                                                                                                                                    </p>
+                                                                                                                                                                                </div>
+                                                                                                                                                                            </div>
+                                                                                                                                                                            <script>
+                                                                                                                                                                                document.getElementById('<%=item.name%>').onload = function() {
+                                                                                                                                                                                    var words = CryptoJS.enc.Base64.parse('<%=detail[item.name]%>');
+                                                                                                                                                                                    var textString = CryptoJS.enc.Utf8.stringify(words);
+                                                                                                                                                                                    document.getElementById('<%=item.name%>').contentWindow.setValue(textString, true);
+                                                                                                                                                                                }
+                                                                                                                                                                            </script>
+                                                                                                                                                                            <%}%>
                                                                                                                                                                             <%if(item.type=='combox'){%>
                                                                                                                                                                                 <% _.each(item.data, function(option,i) { %>
                                                                                                                                                                                     <%if(option.id==detail[item.name]){%>

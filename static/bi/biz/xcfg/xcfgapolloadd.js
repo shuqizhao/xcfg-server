@@ -33,7 +33,7 @@ define(['backbone', 'form', 'godModel'], function(Backbone, Form, GodModel) {
                     },{
                         'name': 'ApolloTemplate',
                         'title': '模板内容',
-                        'type': 'textarea'
+                        'type': 'textnginx'
                     }],
                     rules: {
                         CfgName: {

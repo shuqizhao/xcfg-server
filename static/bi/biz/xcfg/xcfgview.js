@@ -38,7 +38,7 @@ define(['backbone', 'form'], function (Backbone, Form) {
                     }, {
                         'name': 'ApolloTemplate',
                         'title': '模板内容',
-                        'type': 'textarea'
+                        'type': 'textnginx'
                     }],
                     "afterEditRender": function (model,data) {
                         if(model=="edit"){

@@ -183,6 +183,8 @@ define(['backbone', 'text!form.html', 'godModel', 'bootstarp', 'popModal', 'date
                     data[this.id] = arraytemp;
                 } else if (item.attr('controltype') == 'textxml') {
                     data[this.id] = item[0].contentWindow.getValue();
+                }else if (item.attr('controltype') == 'textnginx'){
+                    data[this.id] = item[0].contentWindow.getValue();
                 } else {
                     data[this.id] = item.val();
                 }

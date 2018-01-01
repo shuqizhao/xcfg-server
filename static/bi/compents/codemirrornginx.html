@@ -1,0 +1,67 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/bi/ref/codemirror/codemirror.css" />
+    <script src="/static/bi/ref/codemirror/codemirror.js"></script>
+    <script src="/static/bi/ref/codemirror/nginx.js"></script>
+    <script src="/static/bi/ref/jquery-1.11.1.min.js"></script>
+    <script src="/static/bi/ref/jquery.format.js"></script>
+</head>
+
+<body style="margin:0px;">
+    <textarea id="myarea"></textarea>
+</body>
+
+<script>
+    var areaxml = document.getElementById('myarea');
+    var editor = CodeMirror.fromTextArea(areaxml, {
+        mode: "nginx",
+        autoMatchParens: true,
+        lineNumbers: true
+    });
+    editor.setOption('lineWrapping', true);
+    editor.setSize("100%", "100%")
+        //editor.setValue("<gg>");
+    editor.refresh()
+
+
+    function getValue() {
+        return editor.getValue();
+    }
+
+    function setValue(str, readOnly = false) {
+        str = $.format(str, {
+            method: 'xml'
+        });
+        editor.setOption('readOnly', readOnly)
+        editor.setValue(str);
+        editor.refresh();
+        changeFrameHeight();
+    }
+
+    function changeFrameHeight() {
+        var height = document.getElementsByClassName('CodeMirror-sizer')[0].offsetHeight;
+        //console.log(height)
+        parent.document.getElementsByTagName("iframe")[1].height = height + 50;
+        //parent.frames["CfgFile"].height = height;
+    }
+    window.onresize = function() {
+        //alert(1)
+        changeFrameHeight();
+    }
+    document.onkeydown = function(event) {
+        changeFrameHeight();
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        if (e && e.keyCode == 27) { // 按 Esc 
+            //要做的事情
+        }
+        if (e && e.keyCode == 113) { // 按 F2 
+            //要做的事情
+        }
+        if (e && e.keyCode == 13) { // enter 键
+            //要做的事情
+        }
+    };
+</script>
+
+</html>
