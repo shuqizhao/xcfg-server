@@ -39,3 +39,10 @@ func (c *CfgHistroyController) Get() {
 	c.Ctx.Output.ContentType("application/xml")
 	c.Ctx.Output.Body([]byte(cfgFile))
 }
+
+func (c *CfgHistroyController) GetTemplate() {
+	id, _ := c.GetInt("id")
+	cftTemplate := models.GetCfgHistoryTemplate(id)
+	c.Ctx.Output.ContentType("text/plain")
+	c.Ctx.Output.Body([]byte(cftTemplate))
+}

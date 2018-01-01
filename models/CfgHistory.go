@@ -4,7 +4,6 @@ import (
 	"github.com/astaxie/beego/orm"
 	"strconv"
 	"fmt"
-	"time"
 )
 
 type CfgHistory struct {
@@ -110,8 +109,22 @@ func GetCfgHistoryFile(id int) string {
 		fmt.Println("找不到主键")
 	} else {
 		fmt.Println(cfg.Id, cfg.CfgName)
-		GetRedisClient().Put(strconv.Itoa(cfg.Id), cfg.CfgFile, time.Hour*24*360)
+		//GetRedisClient().Put(strconv.Itoa(cfg.Id), cfg.CfgFile, time.Hour*24*360)
 	}
 	return cfg.CfgFile
+}
 
+func GetCfgHistoryTemplate(id int) string {
+	o := orm.NewOrm()
+	cfg := CfgHistory{Id: id}
+	err := o.Read(&cfg)
+
+	if err == orm.ErrNoRows {
+		fmt.Println("查询不到")
+	} else if err == orm.ErrMissPK {
+		fmt.Println("找不到主键")
+	} else {
+		fmt.Println(cfg.Id, cfg.CfgName)
+	}
+	return cfg.ApolloTemplate
 }

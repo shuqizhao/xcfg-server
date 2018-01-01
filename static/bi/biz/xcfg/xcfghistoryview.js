@@ -37,7 +37,11 @@ define(['backbone', 'searchDataTable'], function(Backbone, SearchDataTable) {
                         'type': 'timer'
                     }],
                     "fnRowCallback": function(row, data) {
-                        $('td:eq(1)', row).html('<a href="/cfghistory/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
+                        if(data.CfgType=="1"){
+                            $('td:eq(1)', row).html('<a href="/cfghistory/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>&nbsp;&nbsp;<a href="/cfghistory/getTemplate?id=' + data.Id + '" target="_blank">模板</a>');
+                        }else{
+                            $('td:eq(1)', row).html('<a href="/cfghistory/get?id=' + data.Id + '" target="_blank">' + data.CfgName + '</a>');
+                        }
                     },
                     idName: 'Id',
                     functions: {
