@@ -51,6 +51,8 @@ func init() {
 	beego.Router("/cfg/update", &controllers.CfgController{}, "post:UpdateCfg")
 
 	var FilterUser = func(ctx *context.Context) {
+		ctx.Output.Header("Access-Control-Allow-Origin","*")
+		return
 		requestURI := ctx.Request.RequestURI
 		if requestURI == "/notfound" || requestURI == "/" || requestURI == "/ConfigVersionHandler.ashx" || strings.HasPrefix(requestURI, "/xcfg/get") {
 			return

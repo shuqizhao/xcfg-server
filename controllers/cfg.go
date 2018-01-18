@@ -117,6 +117,9 @@ func (c *CfgController) GetCfg() {
 func (c *CfgController) UpdateCfg() {
 	var cfg models.CfgUpdateViewModel
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
+	if cfg.Id==""{
+		c.ParseForm(&cfg)
+	}
 	//fmt.Println(cfg.Id, "我的id", cfg.CfgFile)
 	models.UpdateCfg(cfg)
 	jsonResult := models.JsonResult{Code: 200, Data: true}

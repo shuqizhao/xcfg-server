@@ -16,7 +16,10 @@ func (c *AuthController) Login() {
 	data := 0
 	uservm := models.UserLoginViewModel{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &uservm)
-	if user := models.Login(uservm.Name, uservm.Pwd); user.Id > 0 {
+	if uservm.Un==""{
+		c.ParseForm(&uservm)
+	}
+	if user := models.Login(uservm.Un, uservm.Pwd); user.Id > 0 {
 		data = 1
 		c.Ctx.SetCookie("adAuthCookie", "true")
 		c.Ctx.SetCookie("loginUser", user.Name)

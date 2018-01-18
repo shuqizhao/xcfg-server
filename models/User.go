@@ -36,7 +36,7 @@ type UserInputViewModel struct {
 }
 
 type UserLoginViewModel struct {
-	Name string `json:"un"`
+	Un string `json:"un"`
 	Pwd  string `json:"pwd"`
 }
 
