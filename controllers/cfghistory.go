@@ -27,6 +27,9 @@ func (c *CfgHistroyController) GetCfgHistorys() {
 func (c *CfgHistroyController) RollBack() {
 	var ids models.Ids
 	json.Unmarshal(c.Ctx.Input.RequestBody, &ids)
+	if len(ids.Ids)==0{
+		c.ParseForm(&ids)
+	}
 	models.RollBack(ids.Ids[0])
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult

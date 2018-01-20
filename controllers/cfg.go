@@ -62,6 +62,9 @@ func (c *CfgController) AddCfg() {
 	cfgType := c.GetString("type")
 	var cfg models.Cfg
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
+	if cfg.CfgName==""{
+		c.ParseForm(&cfg)
+	}
 	models.AddCfg(cfg.CfgName, cfg.AppName, cfg.CfgFile, env,cfg.ApolloTemplate,cfgType)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
@@ -72,6 +75,9 @@ func (c *CfgController) Exists() {
 	env := c.GetString("env")
 	var cfg models.Cfg
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
+	if cfg.Id==0{
+		c.ParseForm(&cfg)
+	}
 	data := 0
 	if models.IsExistsCfg(cfg.CfgName, cfg.AppName, env) {
 		data = 1

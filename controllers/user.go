@@ -30,6 +30,9 @@ func (c *UserController) GetUsers() {
 func (c *UserController) EnableUser() {
 	var ids models.Ids
 	json.Unmarshal(c.Ctx.Input.RequestBody, &ids)
+	if len(ids.Ids)==0{
+		c.ParseForm(&ids)
+	}
 	models.EnableUser(ids.Ids)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
@@ -39,6 +42,9 @@ func (c *UserController) EnableUser() {
 func (c *UserController) DisableUser() {
 	var ids models.Ids
 	json.Unmarshal(c.Ctx.Input.RequestBody, &ids)
+	if len(ids.Ids)==0{
+		c.ParseForm(&ids)
+	}
 	models.DisableUser(ids.Ids)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
@@ -48,6 +54,9 @@ func (c *UserController) DisableUser() {
 func (c *UserController) AddUser() {
 	var user models.User
 	json.Unmarshal(c.Ctx.Input.RequestBody, &user)
+	if user.Name==""{
+		c.ParseForm(&user)
+	}
 	models.AddUser(user.Name, user.Pwd)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
@@ -57,6 +66,9 @@ func (c *UserController) AddUser() {
 func (c *UserController) UpdateUser() {
 	var ur models.UserRoleViewModel
 	json.Unmarshal(c.Ctx.Input.RequestBody, &ur)
+	if ur.Id==""{
+		c.ParseForm(&ur)
+	}
 	models.AddRolesByUserId(ur.Id, ur.Roles)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
@@ -66,6 +78,9 @@ func (c *UserController) UpdateUser() {
 func (c *UserController) IsExists() {
 	var user models.User
 	json.Unmarshal(c.Ctx.Input.RequestBody, &user)
+	if user.Name==""{
+		c.ParseForm(&user)
+	}
 	data := 0
 	if models.IsExistsUserName(user.Name, user.Id) {
 		data = 1
