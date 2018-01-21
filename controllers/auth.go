@@ -57,8 +57,11 @@ func (c *AuthController) CheckPwd() {
 	data := 0
 	uservm := models.UserModViewModel{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &uservm)
+	if uservm.OldPwd==""{
+		c.ParseForm(&uservm)
+	}
 	id := c.GetSession("userId").(int)
-	if user := models.GetUser(id); user.Pwd == uservm.OldPwd {
+	if  user := models.GetUser(id); user.Pwd == uservm.OldPwd {
 		data = 1
 	}
 	jsonResult := models.JsonResult{Code: 200, Data: data}
@@ -70,6 +73,10 @@ func (c *AuthController) ModPwd() {
 	data := 0
 	uservm := models.UserModViewModel{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &uservm)
+	if uservm.OldPwd==""{
+		c.ParseForm(&uservm)
+	}
+	//
 	id := c.GetSession("userId").(int)
 	if models.UpdatePwd(id, uservm.Pwd) {
 		data = 1
