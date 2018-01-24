@@ -51,11 +51,11 @@ func init() {
 	beego.Router("/cfg/update", &controllers.CfgController{}, "post:UpdateCfg")
 
 	var FilterUser = func(ctx *context.Context) {
-		ctx.Output.Header("Access-Control-Allow-Origin","http://localhost:8080")
-		ctx.Output.Header("Access-Control-Allow-Credentials","true")
-		ctx.Output.Header("Access-Control-Allow-Headers","X-Requested-With")
-		ctx.Output.Header("Access-Control-Allow-Methods","GET,POST,PUT,DELETE,OPTIONS")
-		return
+		//ctx.Output.Header("Access-Control-Allow-Origin","http://localhost:8080")
+		//ctx.Output.Header("Access-Control-Allow-Credentials","true")
+		//ctx.Output.Header("Access-Control-Allow-Headers","X-Requested-With")
+		//ctx.Output.Header("Access-Control-Allow-Methods","GET,POST,PUT,DELETE,OPTIONS")
+		//return
 		requestURI := ctx.Request.RequestURI
 		if requestURI == "/notfound" || requestURI == "/" || requestURI == "/ConfigVersionHandler.ashx" || strings.HasPrefix(requestURI, "/xcfg/get") {
 			return

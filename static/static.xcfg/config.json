@@ -1,5 +1,5 @@
 {
-    "ApiBaseUrl": "http://localhost:1101",
+    "ApiBaseUrl": "",
     "Domain":"",
     "Avatar": "/src/assets/user2-160x160.jpg",
     "LoginTitle": "<b>远程</b>配置文件管理",

@@ -27,6 +27,9 @@ func main() {
 	createTable()
 
 	beego.BConfig.WebConfig.Session.SessionOn = true
+	beego.SetStaticPath("/dist", "static/static.xcfg/dist")
+	beego.SetStaticPath("/config.json", "static/static.xcfg/config.json")
+	beego.SetStaticPath("/src", "static/static.xcfg/src")
 	beego.Run()
 }
 
