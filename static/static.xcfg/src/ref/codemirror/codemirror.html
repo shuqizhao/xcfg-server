@@ -1,0 +1,52 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/src/ref/codemirror/codemirror.css" />
+    <script src="/src/ref/codemirror/codemirror.js"></script>
+    <script src="/src/ref/codemirror/xml.js"></script>
+    <script src="/src/ref/codemirror/jquery-1.11.1.min.js"></script>
+    <script src="/src/ref/codemirror/jquery.format.js"></script>
+</head>
+
+<body style="margin:0px;">
+    <textarea id="myarea"></textarea>
+</body>
+
+<script>
+    var areaxml = document.getElementById('myarea');
+    var editor = CodeMirror.fromTextArea(areaxml, {
+        mode: "xml",
+        autoMatchParens: true,
+        lineNumbers: true
+    });
+    editor.setOption('lineWrapping', true);
+    editor.setSize("100%", "100%")
+        //editor.setValue("<gg>");
+    editor.refresh()
+
+
+    function getValue() {
+        return editor.getValue();
+    }
+
+    function setValue(id,str, readOnly = false) {
+        str = $.format(str, {
+            method: 'xml'
+        });
+        editor.setOption('readOnly', readOnly)
+        editor.setValue(str);
+        editor.refresh();
+        changeFrameHeight(id);
+    }
+
+    function changeFrameHeight(id) {
+        var height = document.getElementsByClassName('CodeMirror-sizer')[0].offsetHeight;
+        //console.log(height)
+        if(parent.document.getElementById(id)){
+           parent.document.getElementById(id).style.height = height + 15+"px";
+        }
+        //parent.frames["CfgFile"].height = height;
+    }
+</script>
+
+</html>
