@@ -70,6 +70,14 @@ func AddCfg(cfgName string, appName string, cfgFile string, env string,apolloTem
 	reg := regexp.MustCompile(`\<\?.*?\?\>`)
 	rep := []byte("${1}")
 	cfgFile = string(reg.ReplaceAll(b, rep))
+
+	regDocType := regexp.MustCompile(`\<!DOCTYPE[\w\W]*?\>`)
+	dotTypeString := regDocType.FindString(cfgFile)
+	//fmt.Println(dotTypeString)
+	if dotTypeString!="" {
+		cfgFile = strings.Replace(cfgFile, dotTypeString, "", 1)
+	}
+
 	xmlDoc, _ := LoadDocument(strings.NewReader(cfgFile))
 	rootNode := xmlDoc.FirstChild().ToElement()
 	rootNode.SetAttribute("majorVersion","1")
@@ -288,6 +296,14 @@ func UpdateCfg(cfg CfgUpdateViewModel) bool {
 		reg := regexp.MustCompile(`\<\?.*?\?\>`)
 		rep := []byte("${1}")
 		cfg.CfgFile = string(reg.ReplaceAll(b, rep))
+
+		regDocType := regexp.MustCompile(`\<!DOCTYPE[\w\W]*?\>`)
+		dotTypeString := regDocType.FindString(cfg.CfgFile)
+		//fmt.Println(dotTypeString)
+		if dotTypeString!="" {
+			cfg.CfgFile = strings.Replace(cfg.CfgFile, dotTypeString, "", 1)
+		}
+
 		xmlDoc, _ := LoadDocument(strings.NewReader(cfg.CfgFile))
 		rootNode := xmlDoc.FirstChild().ToElement()
 		rootNode.SetAttribute("majorVersion","1")
@@ -295,7 +311,8 @@ func UpdateCfg(cfg CfgUpdateViewModel) bool {
 		buf := bytes.NewBufferString("")
 		xmlDoc.Accept(NewSimplePrinter(buf, PrintStream))
 		//fmt.Println(buf.String())
-		newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + buf.String()
+		dotTypeString=strings.Trim(dotTypeString,"")
+		newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" +dotTypeString+ buf.String()
 		
 		newcfg.ApolloTemplate = strings.Trim(cfg.ApolloTemplate," ")
 
