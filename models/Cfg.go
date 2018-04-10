@@ -89,7 +89,8 @@ func AddCfg(cfgName string, appName string, cfgFile string, env string,apolloTem
 	var cfg Cfg
 	cfg.CfgName = cfgName
 	cfg.AppName = appName
-	cfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" + buf.String()
+	dotTypeString=strings.Trim(dotTypeString,"")
+	cfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" +dotTypeString+ buf.String()
 	cfg.MajorVersion = 1
 	cfg.MinorVersion = 1
 	cfg.Environment = env
