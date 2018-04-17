@@ -29,3 +29,4 @@ _testmain.go
 xcfg-server
 .vscode
 debug
+static/static.xcfg/node_modules
