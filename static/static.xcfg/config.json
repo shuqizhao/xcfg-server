@@ -1,7 +1,7 @@
 {
     "ApiBaseUrl": "",
     "Domain":"",
-    "Avatar": "/src/assets/user2-160x160.jpg",
+    "Avatar": "/src/assets/avatar.jpg",
     "LoginTitle": "<b>远程</b>配置文件管理",
     "LoginBoxMsg": "请使用指定账号登录",
     "LoginUrl": "/auth/login",
