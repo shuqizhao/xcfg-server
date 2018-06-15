@@ -294,7 +294,7 @@ func UpdateCfg(cfg CfgUpdateViewModel) bool {
 		////fmt.Println(buf.String())
 		//dotTypeString=strings.Trim(dotTypeString,"")
 		//newcfg.CfgFile = "<?xml version='1.0' encoding='utf-8' ?>" +dotTypeString+ buf.String()
-		newcfg.CfgFile =dealVersion(newcfg.CfgFile,"1",strconv.Itoa(newcfg.MinorVersion))
+		newcfg.CfgFile =dealVersion(cfg.CfgFile,"1",strconv.Itoa(newcfg.MinorVersion))
 		newcfg.ApolloTemplate = strings.Trim(cfg.ApolloTemplate," ")
 
 		newcfg.UpdateTime = time.Now().Format("2006-01-02 15:04:05")
