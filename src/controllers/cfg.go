@@ -6,7 +6,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
-	"xcfg-server/models"
+	"models"
 
 	"github.com/astaxie/beego"
 )

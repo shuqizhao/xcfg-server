@@ -1,8 +1,8 @@
 package main
 
 import (
-	"xcfg-server/models"
-	_ "xcfg-server/routers"
+	"models"
+	_ "routers"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"

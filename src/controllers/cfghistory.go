@@ -3,7 +3,7 @@ package controllers
 import (
 	"github.com/astaxie/beego"
 	"encoding/json"
-	"xcfg-server/models"
+	"models"
 )
 
 type CfgHistroyController struct {

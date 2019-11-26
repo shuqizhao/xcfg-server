@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"xcfg-server/controllers"
-	"xcfg-server/models"
+	"controllers"
+	"models"
 
 	"github.com/astaxie/beego/context"
 

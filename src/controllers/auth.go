@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"xcfg-server/models"
+	"models"
 
 	"github.com/astaxie/beego"
 )

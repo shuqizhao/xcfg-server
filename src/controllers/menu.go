@@ -1,7 +1,7 @@
 package controllers
 
 import "github.com/astaxie/beego"
-import "xcfg-server/models"
+import "models"
 
 type MenuController struct {
 	beego.Controller
