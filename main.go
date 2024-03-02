@@ -1,8 +1,9 @@
 package main
 
 import (
-	"models"
-	_ "routers"
+	_ "github.com/shuqizhao/xcfg-server/src/routers"
+
+	"github.com/shuqizhao/xcfg-server/src/models"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -33,7 +34,7 @@ func main() {
 	beego.Run()
 }
 
-//自动建表
+// 自动建表
 func createTable() {
 
 	name := "default"                          //数据库别名

@@ -6,7 +6,8 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strconv"
-	"models"
+
+	"github.com/shuqizhao/xcfg-server/src/models"
 
 	"github.com/astaxie/beego"
 )
@@ -16,7 +17,7 @@ type CfgController struct {
 }
 
 /*
-	查询配置文件状态
+查询配置文件状态
 */
 func (c *CfgController) Post() {
 	rcfgResult := models.RemoteConfigSectionCollection{}
@@ -27,7 +28,7 @@ func (c *CfgController) Post() {
 		if id > 0 {
 			v.DownloadUrl = "xcfg/get?id=" + strconv.Itoa(id)
 			v.TemplateUrl = "xcfg/getTemplate?id=" + strconv.Itoa(id)
-			sections = append(sections, &models.RemoteConfigSection{v.SectionName, 0, 0, v.DownloadUrl,v.TemplateUrl})
+			sections = append(sections, &models.RemoteConfigSection{v.SectionName, 0, 0, v.DownloadUrl, v.TemplateUrl})
 		}
 
 	}
@@ -38,7 +39,7 @@ func (c *CfgController) Post() {
 }
 
 /*
-	获取配置文件
+获取配置文件
 */
 func (c *CfgController) Get() {
 	id, _ := c.GetInt("id")
@@ -48,7 +49,7 @@ func (c *CfgController) Get() {
 }
 
 /*
-	获取模板
+获取模板
 */
 func (c *CfgController) GetTemplate() {
 	id, _ := c.GetInt("id")
@@ -62,10 +63,10 @@ func (c *CfgController) AddCfg() {
 	cfgType := c.GetString("type")
 	var cfg models.Cfg
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
-	if cfg.CfgName==""{
+	if cfg.CfgName == "" {
 		c.ParseForm(&cfg)
 	}
-	models.AddCfg(cfg.CfgName, cfg.AppName, cfg.CfgFile, env,cfg.ApolloTemplate,cfgType)
+	models.AddCfg(cfg.CfgName, cfg.AppName, cfg.CfgFile, env, cfg.ApolloTemplate, cfgType)
 	jsonResult := models.JsonResult{Code: 200, Data: true}
 	c.Data["json"] = &jsonResult
 	c.ServeJSON()
@@ -75,7 +76,7 @@ func (c *CfgController) Exists() {
 	env := c.GetString("env")
 	var cfg models.Cfg
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
-	if cfg.Id==0{
+	if cfg.Id == 0 {
 		c.ParseForm(&cfg)
 	}
 	data := 0
@@ -118,12 +119,12 @@ func (c *CfgController) GetCfg() {
 }
 
 /*
-	更新配置
+更新配置
 */
 func (c *CfgController) UpdateCfg() {
 	var cfg models.CfgUpdateViewModel
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cfg)
-	if cfg.Id==""{
+	if cfg.Id == "" {
 		c.ParseForm(&cfg)
 	}
 	//fmt.Println(cfg.Id, "我的id", cfg.CfgFile)

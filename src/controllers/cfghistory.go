@@ -1,14 +1,16 @@
 package controllers
 
 import (
-	"github.com/astaxie/beego"
 	"encoding/json"
-	"models"
+
+	"github.com/astaxie/beego"
+	"github.com/shuqizhao/xcfg-server/src/models"
 )
 
 type CfgHistroyController struct {
 	beego.Controller
 }
+
 func (c *CfgHistroyController) GetCfgHistorys() {
 	id := c.GetString("id")
 	dtp := &models.DataTableParameter{}
@@ -27,7 +29,7 @@ func (c *CfgHistroyController) GetCfgHistorys() {
 func (c *CfgHistroyController) RollBack() {
 	var ids models.Ids
 	json.Unmarshal(c.Ctx.Input.RequestBody, &ids)
-	if len(ids.Ids)==0{
+	if len(ids.Ids) == 0 {
 		c.ParseForm(&ids)
 	}
 	models.RollBack(ids.Ids[0])

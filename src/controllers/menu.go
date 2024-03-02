@@ -1,7 +1,9 @@
 package controllers
 
-import "github.com/astaxie/beego"
-import "models"
+import (
+	"github.com/astaxie/beego"
+	"github.com/shuqizhao/xcfg-server/src/models"
+)
 
 type MenuController struct {
 	beego.Controller

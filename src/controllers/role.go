@@ -3,7 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"strconv"
-	"models"
+
+	"github.com/shuqizhao/xcfg-server/src/models"
 
 	"github.com/astaxie/beego"
 )
@@ -44,7 +45,7 @@ func (c *RoleController) GetRole() {
 func (c *RoleController) AddRole() {
 	var role models.Role
 	json.Unmarshal(c.Ctx.Input.RequestBody, &role)
-	if role.Name==""{
+	if role.Name == "" {
 		c.ParseForm(&role)
 	}
 	models.AddRole(role.Name)
@@ -56,7 +57,7 @@ func (c *RoleController) AddRole() {
 func (c *RoleController) IsExists() {
 	var role models.Role
 	json.Unmarshal(c.Ctx.Input.RequestBody, &role)
-	if role.Name==""{
+	if role.Name == "" {
 		c.ParseForm(&role)
 	}
 	data := 0
@@ -93,7 +94,7 @@ func (c *RoleController) GetRoleMenus() {
 func (c *RoleController) UpdateRole() {
 	var rm models.RoleMenuViewModel
 	json.Unmarshal(c.Ctx.Input.RequestBody, &rm)
-	if rm.Id==""{
+	if rm.Id == "" {
 		c.ParseForm(&rm)
 	}
 	models.AddMenusByRoleId(rm.Id, rm.Menus)

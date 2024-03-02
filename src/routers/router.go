@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"controllers"
-	"models"
+	"github.com/shuqizhao/xcfg-server/src/controllers"
+	"github.com/shuqizhao/xcfg-server/src/models"
 
 	"github.com/astaxie/beego/context"
 
@@ -13,7 +13,7 @@ import (
 
 func init() {
 	beego.Router("/", &controllers.MainController{})
-	beego.Router("/old", &controllers.MainController{},"get:GetOld")
+	beego.Router("/old", &controllers.MainController{}, "get:GetOld")
 
 	beego.Router("/auth/login", &controllers.AuthController{}, "post:Login")
 	beego.Router("/auth/checkpwd", &controllers.AuthController{}, "post:CheckPwd")

@@ -3,7 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"strconv"
-	"models"
+
+	"github.com/shuqizhao/xcfg-server/src/models"
 
 	"github.com/astaxie/beego"
 )
